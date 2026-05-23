@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="9. sınıf öğrencileri için Matematik, Fizik, Kimya ve Biyoloji yazılı hazırlık platformu. Konu özetleri ve 10 soruluk interaktif deneme sınavları.">
+    <title>LastStudy | 9. Sınıf Sınav Hazırlık Platformu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <!-- MathJax for Beautiful Formulas -->
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.3s, color 0.3s; }
+        .subject-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .subject-card:hover { transform: translateY(-4px); }
+
+        /* Dark Mode */
+        body.dark { background: #0f172a !important; color: #cbd5e1 !important; }
+        body.dark .bg-white { background: #1e293b !important; }
+        body.dark .bg-slate-50 { background: #0f172a !important; }
+        body.dark .bg-slate-100 { background: #334155 !important; }
+        body.dark .text-slate-800, body.dark .text-slate-900 { color: #e2e8f0 !important; }
+        body.dark .text-slate-500, body.dark .text-slate-600, body.dark .text-slate-700 { color: #94a3b8 !important; }
+        body.dark .border-slate-100, body.dark .border-slate-200 { border-color: #334155 !important; }
+        body.dark .subject-card { border-color: #475569 !important; }
+        body.dark .subject-card:hover { border-color: #64748b !important; box-shadow: 0 10px 25px rgba(0,0,0,0.4) !important; }
+        body.dark .bg-indigo-50 { background: #312e81 !important; }
+        body.dark .bg-cyan-50 { background: #164e63 !important; }
+        body.dark .bg-purple-50 { background: #3b0764 !important; }
+        body.dark .bg-emerald-50 { background: #064e3b !important; }
+        body.dark .shadow-md, body.dark .shadow-sm { box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes pulse2 { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        .anim-fade-up { animation: fadeInUp 0.4s ease-out forwards; }
+        .anim-fade { animation: fadeIn 0.3s ease-out forwards; }
+        .timer-warn { animation: pulse2 1s ease-in-out infinite; color: #ef4444 !important; }
+
+        /* Confetti */
+        #confetti-canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+
+        /* Search */
+        .search-box { transition: all 0.3s; }
+        .search-box:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.2); }
+        body.dark .search-box { background: #1e293b !important; border-color: #475569 !important; color: #e2e8f0 !important; }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Header / Navbar -->
+    <header
+        class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-xl py-6 px-4 sticky top-0 z-50 backdrop-blur-md bg-opacity-95">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()">
+                <div class="bg-gradient-to-tr from-indigo-500 to-pink-500 p-2.5 rounded-2xl shadow-inner">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight">LastStudy</h1>
+                    <p class="text-indigo-300 text-xs font-semibold tracking-wider uppercase">Son Müfredata Uygun Yazılı Provaları
+                    </p>
+                </div>
+            </div>
+
+            <!-- Subject Quick Navigation -->
+            <div class="flex flex-wrap gap-2 justify-center items-center" id="quick-nav">
+                <button onclick="selectSubject('matematik')"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20">📐
+                    Matematik</button>
+                <button onclick="selectSubject('fizik')"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20">⚡
+                    Fizik</button>
+                <button onclick="selectSubject('kimya')"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-purple-500/10 text-purple-300 hover:bg-purple-500/20">🧪
+                    Kimya</button>
+                    <button onclick="selectSubject('biyoloji')"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20">🧬
+                        Biyoloji</button>
+                    <button onclick="selectSubject('edebiyat')"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-orange-500/10 text-orange-300 hover:bg-orange-500/20">📖
+                        Edebiyat</button>
+                    <button onclick="selectSubject('tarih')"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-amber-500/10 text-amber-300 hover:bg-amber-500/20">📜
+                        Tarih</button>
+                    <button onclick="selectSubject('cografya')"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-teal-500/10 text-teal-300 hover:bg-teal-500/20">🌍
+                        Coğrafya</button>
+                    <span class="text-slate-600 mx-1">|</span>
+                <button id="dark-mode-btn" onclick="toggleDarkMode()"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-500/10 text-slate-300 hover:bg-slate-500/30">🌙</button>
+            </div>
+        </div>
+    </header>
+    <canvas id="confetti-canvas" class="hidden"></canvas>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+
+        <!-- DASHBOARD (HOME SCREEN) -->
+        <section id="dashboard-view" class="space-y-8">
+            <!-- Hero banner -->
+            <div
+                class="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-950 rounded-3xl p-8 md:p-12 text-white shadow-lg relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-white">
+                    <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                    </svg>
+                </div>
+                <div class="max-w-2xl space-y-4">
+                    <span
+                        class="bg-cyan-500/30 text-cyan-200 text-xs font-bold px-3.5 py-1.5 rounded-full border border-cyan-400/20">MEB SON MÜFREDATINA TAM UYUMLU</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">Tüm Dersler Zirvede!</h2>
+                    <p class="text-indigo-100 text-sm md:text-base leading-relaxed">
+                        MEB 9. Sınıf güncel müfredatına tam uyumlu içeriklerle Matematik, Fizik, Kimya, Biyoloji, Edebiyat, Tarih ve Coğrafya dersleri tek platformda. Her derse ait eksiksiz konu özetleri ve <strong>10'ar soruluk gerçek yazılı provaları</strong> ile başarıya ulaşın!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Score Stats -->
+            <div>
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-1.5 h-6 bg-emerald-600 rounded-full"></span> Son Sınav Sonuçların
+                </h3>
+                <div id="stats-container" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
+            </div>
+
+            <!-- Subjects Grid -->
+            <div>
+                <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                    <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span> Dersini Seç ve Çalışmaya Başla
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Matematik Card -->
+                    <div onclick="selectSubject('matematik')"
+                        class="subject-card cursor-pointer bg-white p-6 rounded-3xl border border-indigo-200 shadow-md hover:shadow-2xl hover:border-indigo-400 flex flex-col justify-between h-56 ring-2 ring-indigo-400/20">
+                        <div class="space-y-3">
+                            <div
+                                class="bg-indigo-50 text-indigo-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-bold">
+                                📐</div>
+                            <h4 class="text-lg font-extrabold text-slate-800">Matematik <span
+                                    class="bg-indigo-500 text-white text-[10px] px-2 py-0.5 rounded-full ml-1 font-bold">Detaylı</span>
+                            </h4>
+                            <p class="text-slate-500 text-xs leading-relaxed">Kümeler, Mantık, Denklemler, Mutlak Değer,
+                                Üslü/Köklü ve Üçgenler.</p>
+                        </div>
+                        <span class="text-indigo-600 font-bold text-xs flex items-center gap-1 mt-4">Sınava Git (10
+                            Soru) →</span>
+                    </div>
+
+                    <!-- Fizik Card -->
+                    <div onclick="selectSubject('fizik')"
+                        class="subject-card cursor-pointer bg-white p-6 rounded-3xl border border-cyan-200 shadow-md hover:shadow-2xl hover:border-cyan-400 flex flex-col justify-between h-56 ring-2 ring-cyan-400/20">
+                        <div class="space-y-3">
+                            <div
+                                class="bg-cyan-50 text-cyan-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-bold">
+                                ⚡</div>
+                            <h4 class="text-lg font-extrabold text-slate-800">Fizik <span
+                                    class="bg-cyan-500 text-white text-[10px] px-2 py-0.5 rounded-full ml-1 font-bold">Kapsamlı</span>
+                            </h4>
+                            <p class="text-slate-500 text-xs leading-relaxed">Isı, Sıcaklık, Genleşme, Isıl Denge, Isı
+                                İletimi ve Elektrostatik.</p>
+                        </div>
+                        <span class="text-cyan-600 font-bold text-xs flex items-center gap-1 mt-4">Sınava Git (10 Soru)
+                            →</span>
+                    </div>
+
+                    <!-- Kimya Card -->
+                    <div onclick="selectSubject('kimya')"
+                        class="subject-card cursor-pointer bg-white p-6 rounded-3xl border border-purple-200 shadow-md hover:shadow-2xl hover:border-purple-400 flex flex-col justify-between h-56 ring-2 ring-purple-400/20">
+                        <div class="space-y-3">
+                            <div
+                                class="bg-purple-50 text-purple-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-bold">
+                                🧪</div>
+                            <h4 class="text-lg font-extrabold text-slate-800">Kimya <span
+                                    class="bg-purple-500 text-white text-[10px] px-2 py-0.5 rounded-full ml-1 font-bold">Detaylı</span>
+                            </h4>
+                            <p class="text-slate-500 text-xs leading-relaxed">Etkileşimler, Maddenin Halleri (Gazlar,
+                                Plazma), Doğa ve Kimya.</p>
+                        </div>
+                        <span class="text-purple-600 font-bold text-xs flex items-center gap-1 mt-4">Sınava Git (10
+                            Soru) →</span>
+                    </div>
+
+                    <!-- Biyoloji Card -->
+                    <div onclick="selectSubject('biyoloji')"
+                        class="subject-card cursor-pointer bg-white p-6 rounded-3xl border border-emerald-200 shadow-md hover:shadow-2xl hover:border-emerald-400 flex flex-col justify-between h-56 ring-2 ring-emerald-400/20">
+                        <div class="space-y-3">
+                            <div
+                                class="bg-emerald-50 text-emerald-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-bold">
+                                🧬</div>
+                            <h4 class="text-lg font-extrabold text-slate-800">Biyoloji <span
+                                    class="bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full ml-1 font-bold">Kapsamlı</span>
+                            </h4>
+                            <p class="text-slate-500 text-xs leading-relaxed">Hücre Geçişleri, Sınıflandırma, Alemler,
+                                Hayvanlar Alemi ve Virüsler.</p>
+                        </div>
+                        <span class="text-emerald-600 font-bold text-xs flex items-center gap-1 mt-4">Sınava Git (10
+                            Soru) →</span>
+                    </div>
+
+                    <!-- Edebiyat Card -->
+                    <div onclick="selectSubject('edebiyat')"
+                        class="subject-card cursor-pointer bg-white p-6 rounded-3xl border border-orange-200 shadow-md hover:shadow-2xl hover:border-orange-400 flex flex-col justify-between h-56 ring-2 ring-orange-400/20">
+                        <div class="space-y-3">
+                            <div class="bg-orange-50 text-orange-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-bold">📖</div>
+                            <h4 class="text-lg font-extrabold text-slate-800">Edebiyat <span class="bg-orange-500 text-white text-[10px] px-2 py-0.5 rounded-full ml-1 font-bold">Yeni</span></h4>
+                            <p class="text-slate-500 text-xs leading-relaxed">Şiir, Masal ve Fabl, Roman, Tiyatro, Biyografi ve Sözcük Türleri.</p>
+                        </div>
+                        <span class="text-orange-600 font-bold text-xs flex items-center gap-1 mt-4">Sınava Git (10 Soru) →</span>
+                    </div>
+
+                    <!-- Tarih Card -->
+                    <div onclick="selectSubject('tarih')"
+                        class="subject-card cursor-pointer bg-white p-6 rounded-3xl border border-amber-200 shadow-md hover:shadow-2xl hover:border-amber-400 flex flex-col justify-between h-56 ring-2 ring-amber-400/20">
+                        <div class="space-y-3">
+                            <div class="bg-amber-50 text-amber-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-bold">📜</div>
+                            <h4 class="text-lg font-extrabold text-slate-800">Tarih <span class="bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full ml-1 font-bold">Yeni</span></h4>
+                            <p class="text-slate-500 text-xs leading-relaxed">Tarih ve Zaman, İnsanlığın İlk Dönemleri, Orta Çağ, Türk Dünyası ve İslam.</p>
+                        </div>
+                        <span class="text-amber-600 font-bold text-xs flex items-center gap-1 mt-4">Sınava Git (10 Soru) →</span>
+                    </div>
+
+                    <!-- Coğrafya Card -->
+                    <div onclick="selectSubject('cografya')"
+                        class="subject-card cursor-pointer bg-white p-6 rounded-3xl border border-teal-200 shadow-md hover:shadow-2xl hover:border-teal-400 flex flex-col justify-between h-56 ring-2 ring-teal-400/20">
+                        <div class="space-y-3">
+                            <div class="bg-teal-50 text-teal-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-bold">🌍</div>
+                            <h4 class="text-lg font-extrabold text-slate-800">Coğrafya <span class="bg-teal-500 text-white text-[10px] px-2 py-0.5 rounded-full ml-1 font-bold">Yeni</span></h4>
+                            <p class="text-slate-500 text-xs leading-relaxed">Doğa ve İnsan, Dünyanın Şekli/Hareketleri, Harita Bilgisi ve İklim.</p>
+                        </div>
+                        <span class="text-teal-600 font-bold text-xs flex items-center gap-1 mt-4">Sınava Git (10 Soru) →</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SUBJECT WORKSPACE VIEW (HIDDEN INITIALLY) -->
+        <section id="subject-workspace-view" class="hidden space-y-6">
+            <!-- Subject Header and Navigation Tabs -->
+            <div id="workspace-header-card"
+                class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <span id="subject-icon-badge" class="text-3xl p-3 bg-indigo-50 rounded-2xl">📐</span>
+                    <div>
+                        <h2 id="subject-title-text" class="text-xl font-extrabold text-slate-800">Matematik Yazılı
+                            Hazırlığı</h2>
+                        <p id="subject-desc-text" class="text-slate-500 text-xs mt-0.5">Yazılı müfredatına %100 uyumlu
+                            genişletilmiş konu anlatımı ve 10 soruluk deneme.</p>
+                    </div>
+                </div>
+
+                <!-- Internal Study/Quiz Tab Selector -->
+                <div class="flex bg-slate-100 p-1 rounded-2xl w-full md:w-auto">
+                    <button id="workspace-study-tab" onclick="switchWorkspaceTab('study')"
+                        class="flex-1 md:flex-none text-center px-6 py-2.5 rounded-xl font-bold text-xs transition duration-200">
+                        📚 Özet Bilgiler
+                    </button>
+                    <button id="workspace-quiz-tab" onclick="switchWorkspaceTab('quiz')"
+                        class="flex-1 md:flex-none text-center px-6 py-2.5 rounded-xl font-bold text-xs transition duration-200">
+                        ✍️ Deneme Çözümleri
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 1: CONCISE STUDY CONTENT CONTAINER -->
+            <div id="study-tab-content" class="space-y-6">
+                <!-- Search Box -->
+                <input id="study-search" type="text" placeholder="🔍 Konularda ara..." oninput="filterStudyCards()"
+                    class="search-box w-full px-5 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none">
+                <!-- Dynamically injected topic cards will appear here -->
+                <div id="study-cards-container" class="space-y-6"></div>
+            </div>
+
+            <!-- TAB 2: INTERACTIVE EXAM PRACTICE CONTAINER -->
+            <div id="quiz-tab-content" class="hidden max-w-3xl mx-auto space-y-6">
+                <!-- Scoreboard -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-800">Ders Deneme Sınavı</h4>
+                        <p class="text-slate-500 text-xs">Yazılıda çıkabilecek düzeyde özenle seçilmiş 10 soru.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="quiz-timer-display" class="text-xs font-extrabold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-lg">15:00</span>
+                        <span id="quiz-progress-text" class="text-xs font-bold text-slate-600">Soru 1 / 10</span>
+                        <div class="w-20 bg-slate-100 rounded-full h-2">
+                            <div id="quiz-progress-fill" class="h-2 rounded-full transition-all duration-300"
+                                style="width: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div id="quiz-question-card"
+                    class="bg-white p-8 rounded-3xl shadow-md border border-slate-100 min-h-[350px] flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-5">
+                            <span id="quiz-question-badge"
+                                class="bg-indigo-50 text-indigo-700 font-extrabold px-3 py-1 rounded-xl text-xs uppercase tracking-wider">SORU
+                                1</span>
+                            <button onclick="toggleHint()"
+                                class="text-xs text-amber-700 font-bold bg-amber-50 px-3 py-1 rounded-lg hover:bg-amber-100 transition">💡
+                                İpucu Al</button>
+                        </div>
+
+                        <!-- Hint display -->
+                        <div id="quiz-hint-box"
+                            class="hidden bg-amber-50 border border-amber-200 text-amber-950 p-3.5 rounded-2xl text-xs mb-4 leading-relaxed">
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="quiz-question-text" class="text-base font-bold text-slate-800 mb-6 leading-relaxed">
+                            Yükleniyor...</h3>
+
+                        <!-- Options -->
+                        <div id="quiz-options-box" class="space-y-2.5"></div>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div id="quiz-explanation-box" class="hidden mt-6 p-4 rounded-2xl border transition-all">
+                        <h4 id="quiz-explanation-title" class="font-bold text-xs mb-1">Cevap Açıklaması</h4>
+                        <p id="quiz-explanation-text" class="text-xs leading-relaxed"></p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex justify-between items-center mt-6 pt-6 border-t border-slate-100">
+                        <button id="quiz-prev-btn" onclick="prevQuestion()"
+                            style="display:none" class="text-slate-500 hover:text-slate-800 font-bold text-xs items-center gap-1">←
+                            Geri</button>
+                        <button id="quiz-next-btn" onclick="nextQuestion()"
+                            class="ml-auto bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow hover:bg-slate-900 transition">Onayla
+                            🎯</button>
+                    </div>
+                </div>
+
+                <!-- Subject Quiz Results Page -->
+                <div id="quiz-results-card"
+                    class="hidden bg-white p-8 rounded-3xl shadow-xl border border-slate-100 text-center">
+                    <span class="text-5xl">🎯</span>
+                    <h3 class="text-xl font-extrabold text-slate-800 mt-4">Ders Sınavı Tamamlandı!</h3>
+
+                    <div class="grid grid-cols-2 gap-4 max-w-xs mx-auto my-6">
+                        <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 text-center">
+                            <span class="text-xs text-emerald-600 block font-semibold">DOĞRU</span>
+                            <span id="results-correct-count" class="text-xl font-black text-emerald-800">0 / 10</span>
+                        </div>
+                        <div class="bg-rose-50 p-4 rounded-2xl border border-rose-100 text-center">
+                            <span class="text-xs text-rose-600 block font-semibold">YANLIŞ</span>
+                            <span id="results-wrong-count" class="text-xl font-black text-rose-800">0 / 10</span>
+                        </div>
+                    </div>
+
+                    <p id="results-feedback-text"
+                        class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-6">
+                    </p>
+
+                    <div class="flex gap-2 justify-center flex-wrap">
+                        <button onclick="restartQuiz()"
+                            class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-950 transition">Tekrar
+                            Çöz 🔄</button>
+                        <button onclick="switchWorkspaceTab('study')"
+                            class="bg-indigo-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-indigo-700 transition">Konu
+                            Özeti Oku 📚</button>
+                        <button onclick="goHome()"
+                            class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Ana Sayfa 🏠</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-xs border-t border-slate-800 mt-12">
+        <div class="max-w-4xl mx-auto px-4 space-y-2">
+            <p class="font-bold text-slate-300 text-sm">© 2026 LastStudy Platformu. 9. Sınıf Öğrencileri
+                için Tasarlanmıştır.</p>
+            <p class="text-slate-500">Milli Eğitim Bakanlığı (MEB) güncel müfredatına ve kazanım tablolarına %100
+                uyumludur.</p>
+            <div class="mt-4 pt-4 border-t border-slate-800 inline-block">
+                <p class="text-indigo-400 font-extrabold tracking-widest uppercase text-sm">Hazırlayan: Yasir Peker</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Engine (Javascript) -->
+    <script>
+        // Subject Colors and Theme Configuration
+        const subjectThemes = {
+            matematik: {
+                title: "Matematik Yazılı Hazırlığı",
+                icon: "📐",
+                badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-100",
+                buttonActive: "bg-indigo-600 text-white shadow-lg",
+                buttonInactive: "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                textClass: "text-indigo-600",
+                accentBg: "bg-indigo-50",
+                accentBorder: "border-indigo-100",
+                progressBg: "bg-indigo-600"
+            },
+            fizik: {
+                title: "Fizik Yazılı Hazırlığı",
+                icon: "⚡",
+                badgeClass: "bg-cyan-50 text-cyan-700 border-cyan-100",
+                buttonActive: "bg-cyan-600 text-white shadow-lg",
+                buttonInactive: "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                textClass: "text-cyan-600",
+                accentBg: "bg-cyan-50",
+                accentBorder: "border-cyan-100",
+                progressBg: "bg-cyan-600"
+            },
+            kimya: {
+                title: "Kimya Yazılı Hazırlığı",
+                icon: "🧪",
+                badgeClass: "bg-purple-50 text-purple-700 border-purple-100",
+                buttonActive: "bg-purple-600 text-white shadow-lg",
+                buttonInactive: "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                textClass: "text-purple-600",
+                accentBg: "bg-purple-50",
+                accentBorder: "border-purple-100",
+                progressBg: "bg-purple-600"
+            },
+            biyoloji: {
+                title: "Biyoloji Yazılı Hazırlığı",
+                icon: "🧬",
+                badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-100",
+                buttonActive: "bg-emerald-600 text-white shadow-lg",
+                buttonInactive: "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                textClass: "text-emerald-600",
+                accentBg: "bg-emerald-50",
+                accentBorder: "border-emerald-100",
+                progressBg: "bg-emerald-600"
+            },
+            edebiyat: {
+                title: "Edebiyat Yazılı Hazırlığı",
+                icon: "📖",
+                badgeClass: "bg-orange-50 text-orange-700 border-orange-100",
+                buttonActive: "bg-orange-600 text-white shadow-lg",
+                buttonInactive: "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                textClass: "text-orange-600",
+                accentBg: "bg-orange-50",
+                accentBorder: "border-orange-100",
+                progressBg: "bg-orange-600"
+            },
+            tarih: {
+                title: "Tarih Yazılı Hazırlığı",
+                icon: "📜",
+                badgeClass: "bg-amber-50 text-amber-700 border-amber-100",
+                buttonActive: "bg-amber-600 text-white shadow-lg",
+                buttonInactive: "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                textClass: "text-amber-600",
+                accentBg: "bg-amber-50",
+                accentBorder: "border-amber-100",
+                progressBg: "bg-amber-600"
+            },
+            cografya: {
+                title: "Coğrafya Yazılı Hazırlığı",
+                icon: "🌍",
+                badgeClass: "bg-teal-50 text-teal-700 border-teal-100",
+                buttonActive: "bg-teal-600 text-white shadow-lg",
+                buttonInactive: "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                textClass: "text-teal-600",
+                accentBg: "bg-teal-50",
+                accentBorder: "border-teal-100",
+                progressBg: "bg-teal-600"
+            }
+        };
+
+        // Complete Study & Questions Dataset (MASSIVE EXPANSION)
+        const subjectData = {
+            matematik: {
+                studyCards: [
+                    {
+                        title: "1. Mantık ve Önermeler",
+                        icon: "💡",
+                        content: `Doğru ya da yanlış kesin bir hüküm bildiren ifadelere önerme denir. Soru, istek ve ünlem cümleleri önerme belirtmez.<br>
+                        <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                            <li><strong>Veya ($\\lor$):</strong> Her ikisi yanlışsa (0) sonuç 0, diğer tüm durumlarda 1'dir.</li>
+                            <li><strong>Ve ($\\land$):</strong> Her ikisi doğruysa (1) sonuç 1, diğer tüm durumlarda 0'dır.</li>
+                            <li><strong>İse ($\\implies$):</strong> Sadece $1 \\implies 0$ durumunda sonuç 0'dır (100 Kuralı).</li>
+                            <li><strong>Ancak ve Ancak ($\\iff$):</strong> Her ikisi aynıysa 1, farklıysa 0'dır.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "2. Kümelerde Temel İşlemler",
+                        icon: "⭕",
+                        content: `Kümeler, iyi tanımlanmış nesneler topluluğudur.<br>
+                        <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                            <li><strong>Birleşim ($A \\cup B$):</strong> İki kümenin tüm elemanlarının alınmasıdır. Formülü: $s(A \\cup B) = s(A) + s(B) - s(A \\cap B)$</li>
+                            <li><strong>Kesişim ($A \\cap B$):</strong> İki kümenin ortak elemanlarıdır.</li>
+                            <li><strong>Fark ($A \\setminus B$):</strong> A'da olup B'de olmayan elemanlardır.</li>
+                            <li><strong>Tümleyen ($A'$):</strong> Evrensel kümede olup A'da olmayanlardır.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "3. Sayı Kümeleri",
+                        icon: "🔢",
+                        content: `Sayı kümelerinin birbirini kapsama durumlarını bilmek soru çözümlerinde temel adımdır:
+                        <ul class="list-disc pl-5 mt-1 space-y-1.5 text-xs text-slate-600">
+                            <li><strong>Doğal Sayılar ($\\mathbb{N}$):</strong> $\\{0, 1, 2, \\dots\\}$ </li>
+                            <li><strong>Tam Sayılar ($\\mathbb{Z}$):</strong> $\\{\\dots, -2, -1, 0, 1, 2, \\dots\\}$ </li>
+                            <li><strong>Rasyonel Sayılar ($\\mathbb{Q}$):</strong> $a/b$ şeklinde yazılabilen sayılar.</li>
+                            <li><strong>İrrasyonel Sayılar ($\\mathbb{Q}'$):</strong> Kök dışına tam çıkamayan ve düzensiz giden ($\\pi$, $\\sqrt{2}$) sayılar.</li>
+                            <li><strong>Reel Sayılar ($\\mathbb{R}$):</strong> Rasyonel ve İrrasyonel sayıların birleşimidir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "4. Denklem ve Eşitsizlikler",
+                        icon: "⚖️",
+                        content: `Eşitsizliklerde en çok dikkat edilmesi gereken kural şudur:
+                        <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 my-2 text-xs">
+                            Bir eşitsizliğin her iki tarafı negatif ($-$) bir sayı ile çarpılır veya bölünürse, eşitsizlik <strong>YÖN DEĞİŞTİRİR</strong>. <br>
+                            Örnek: $-2x < 6 \\implies x > -3$
+                        </div>`
+                    },
+                    {
+                        title: "5. Mutlak Değer",
+                        icon: "📌",
+                        content: `Bir sayının sıfıra olan uzaklığıdır ve asla negatif olamaz ($|x| \\ge 0$).
+                        <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                            <li>İçerisi pozitifse aynen çıkar: $|5| = 5$</li>
+                            <li>İçerisi negatifse eksiyle çarpılarak çıkar: $|-3| = 3$</li>
+                            <li>$|x| = a$ (burada $a \\ge 0$) ise $x = a$ veya $x = -a$ olur.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "6. Üslü ve Köklü İfadeler",
+                        icon: "📈",
+                        content: `Birbirinin tersi olan bu iki işlemde kuralları iyi bilmek şarttır:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li>Çarpmada taban aynıysa üsler toplanır: $a^x \\cdot a^y = a^{x+y}$</li>
+                            <li>Bölmede taban aynıysa üsler çıkarılır: $\\frac{a^x}{a^y} = a^{x-y}$</li>
+                            <li>Köklü sayı dışarıya üslü olarak şöyle çıkar: $\\sqrt[n]{x^m} = x^{\\frac{m}{n}}$</li>
+                        </ul>`
+                    },
+                    {
+                        title: "7. Üçgende Açı ve Kenar",
+                        icon: "📐",
+                        content: `Üçgenlerde kenarlar ve açılar arasında doğrusal ilişki vardır:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Kural:</strong> Büyük açı karşısında büyük kenar bulunur.</li>
+                            <li><strong>Üçgen Eşitsizliği:</strong> Bir kenar, diğer ikisinin farkından büyük, toplamından küçük olmalıdır: $|b - c| < a < b + c$</li>
+                        </ul>`
+                    },
+                    {
+                        title: "8. Dik Üçgen ve Benzerlik",
+                        icon: "📏",
+                        content: `Geometrinin en güçlü iki silahı Pisagor ve Benzerliktir:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Pisagor Teoremi:</strong> $a^2 + b^2 = c^2$. (Özel: 3-4-5, 5-12-13, 8-15-17).</li>
+                            <li><strong>Öklid Bağıntısı (Dik'ten Dik İnme):</strong> $h^2 = p \\cdot k$ (Hamburgerin karesi = Patates x Köfte).</li>
+                            <li><strong>Benzerlik:</strong> Alanların oranı benzerlik oranının karesine ($k^2$) eşittir.</li>
+                        </ul>`
+                    }
+                ],
+                questions: [
+                    {
+                        question: "$p \\implies q \\equiv 0$ olduğuna göre; $p, q$ önermelerinin doğruluk değerleri sırasıyla aşağıdakilerden hangisidir?",
+                        options: [
+                            { text: "0, 0", isCorrect: false },
+                            { text: "0, 1", isCorrect: false },
+                            { text: "1, 0", isCorrect: true },
+                            { text: "1, 1", isCorrect: false }
+                        ],
+                        hint: "İse (=>) bağlacında sonucun sıfır çıkması sadece tek bir durumda mümkündür (100 kuralı).",
+                        explanation: "Koşullu önerme ($p \\implies q$) sadece $1 \\implies 0$ durumunda $0$'a denktir. Dolayısıyla $p=1, q=0$ olmalıdır."
+                    },
+                    {
+                        question: "$A$ ve $B$ iki küme olmak üzere; $s(A)=10$, $s(B)=15$ ve $s(A \\cup B)=20$ olduğuna göre, $s(A \\cap B)$ kaçtır?",
+                        options: [
+                            { text: "5", isCorrect: true },
+                            { text: "10", isCorrect: false },
+                            { text: "15", isCorrect: false },
+                            { text: "25", isCorrect: false }
+                        ],
+                        hint: "Kümelerde birleşim formülü: $s(A \\cup B) = s(A) + s(B) - s(A \\cap B)$'dir.",
+                        explanation: "$20 = 10 + 15 - s(A \\cap B) \\implies 20 = 25 - s(A \\cap B) \\implies s(A \\cap B) = 5$ olarak bulunur."
+                    },
+                    {
+                        question: "Pi ($\\pi$) sayısı aşağıdaki sayı kümelerinden hangisinin bir elemanıdır?",
+                        options: [
+                            { text: "Doğal Sayılar ($\\mathbb{N}$)", isCorrect: false },
+                            { text: "Tam Sayılar ($\\mathbb{Z}$)", isCorrect: false },
+                            { text: "Rasyonel Sayılar ($\\mathbb{Q}$)", isCorrect: false },
+                            { text: "İrrasyonel Sayılar ($\\mathbb{Q}'$)", isCorrect: true }
+                        ],
+                        hint: "Virgülden sonrası bir düzene girmeden sonsuza kadar giden sayılar rasyonel (kesirli) olarak ifade edilemez.",
+                        explanation: "$\\pi$ ve kök dışına tam çıkamayan sayılar ($\\sqrt{2}$ gibi) İrrasyonel Sayılar ($\\mathbb{Q}'$) kümesinin elemanıdır."
+                    },
+                    {
+                        question: "$-2x + 8 \\le 20$ eşitsizliğinin çözüm kümesi aşağıdakilerden hangisidir?",
+                        options: [
+                            { text: "$x \\le -6$", isCorrect: false },
+                            { text: "$x \\ge -6$", isCorrect: true },
+                            { text: "$x \\le 6$", isCorrect: false },
+                            { text: "$x \\ge 6$", isCorrect: false }
+                        ],
+                        hint: "Önce 8'i karşıya at. Sonra her iki tarafı eksi bir sayıya böleceğin için eşitsizlik yönünün döneceğini hatırla.",
+                        explanation: "$-2x \\le 12$ olur. Her iki tarafı $-2$'ye böldüğümüzde eşitsizlik yön değiştirir: $x \\ge -6$ olur."
+                    },
+                    {
+                        question: "$|x - 4| = 7$ denkleminin kökleri çarpımı kaçtır?",
+                        options: [
+                            { text: "-33", isCorrect: true },
+                            { text: "-28", isCorrect: false },
+                            { text: "33", isCorrect: false },
+                            { text: "77", isCorrect: false }
+                        ],
+                        hint: "Mutlak değerin içi ya $+7$'dir ya da $-7$'dir. Bulduğun iki $x$ değerini çarp.",
+                        explanation: "1) $x-4 = 7 \\implies x=11$<br>2) $x-4 = -7 \\implies x=-3$<br>Çarpımları: $11 \\times (-3) = -33$ olur."
+                    },
+                    {
+                        question: "$\\frac{3^{12} \\cdot 3^4}{3^6}$ işleminin sonucu kaçtır?",
+                        options: [
+                            { text: "$3^{8}$", isCorrect: false },
+                            { text: "$3^{10}$", isCorrect: true },
+                            { text: "$3^{14}$", isCorrect: false },
+                            { text: "$3^{22}$", isCorrect: false }
+                        ],
+                        hint: "Çarpmada üstler toplanır, bölmede üstler çıkarılır.",
+                        explanation: "Pay: $3^{12+4} = 3^{16}$ olur. Bölme işleminde üsler çıkarılır: $3^{16-6} = 3^{10}$ elde edilir."
+                    },
+                    {
+                        question: "$\\sqrt{50} - \\sqrt{18} + \\sqrt{8}$ işleminin sonucu aşağıdakilerden hangisidir?",
+                        options: [
+                            { text: "$3\\sqrt{2}$", isCorrect: false },
+                            { text: "$4\\sqrt{2}$", isCorrect: true },
+                            { text: "$5\\sqrt{2}$", isCorrect: false },
+                            { text: "$8\\sqrt{2}$", isCorrect: false }
+                        ],
+                        hint: "Bütün sayıları $A\\sqrt{2}$ formatında yazmaya çalış ($50 = 25 \\times 2$ gibi).",
+                        explanation: "$\\sqrt{50} = 5\\sqrt{2}$<br>$\\sqrt{18} = 3\\sqrt{2}$<br>$\\sqrt{8} = 2\\sqrt{2}$<br>İşlem: $5\\sqrt{2} - 3\\sqrt{2} + 2\\sqrt{2} = 4\\sqrt{2}$ olur."
+                    },
+                    {
+                        question: "Kenarları $7\\text{ cm}$ ve $15\\text{ cm}$ olan bir üçgenin üçüncü kenarının ($x$) bir tamsayı olarak alabileceği <u>en büyük</u> değer kaçtır?",
+                        options: [
+                            { text: "19", isCorrect: false },
+                            { text: "21", isCorrect: true },
+                            { text: "22", isCorrect: false },
+                            { text: "23", isCorrect: false }
+                        ],
+                        hint: "Üçüncü kenar, diğer iki kenarın toplamından kesinlikle küçük olmalıdır.",
+                        explanation: "Üçgen eşitsizliğine göre: $|15 - 7| < x < 15 + 7 \\implies 8 < x < 22$. $x$ en fazla 21 olabilir."
+                    },
+                    {
+                        question: "Bir dik üçgende dik köşeden hipotenüse indirilen yüksekliğin uzunluğu $4\\text{ cm}$, hipotenüste ayırdığı parçalardan biri $2\\text{ cm}$'dir. Diğer parça kaç $\\text{cm}$'dir?",
+                        options: [
+                            { text: "4", isCorrect: false },
+                            { text: "6", isCorrect: false },
+                            { text: "8", isCorrect: true },
+                            { text: "16", isCorrect: false }
+                        ],
+                        hint: "Dik'ten dik inildiğinde Öklid Bağıntısı kullanılır: $h^2 = p \\cdot k$.",
+                        explanation: "$4^2 = 2 \\cdot k \\implies 16 = 2 \\cdot k \\implies k = 8\\text{ cm}$ olarak bulunur."
+                    },
+                    {
+                        question: "İki benzer üçgenin alanları oranı $16/25$'tir. Bu üçgenlerin çevreleri oranı aşağıdakilerden hangisi olabilir?",
+                        options: [
+                            { text: "$4/5$", isCorrect: true },
+                            { text: "$8/10$", isCorrect: false },
+                            { text: "$16/25$", isCorrect: false },
+                            { text: "$256/625$", isCorrect: false }
+                        ],
+                        hint: "Alanlar oranı, benzerlik (veya çevreler) oranının karesine eşittir. Neyin karesi 16/25 yapar?",
+                        explanation: "Benzerlik oranı $k$ olsun. Alanlar oranı $k^2 = 16/25$'tir. Her iki tarafın karekökünü alırsak benzerlik oranı (dolayısıyla çevreler oranı) $k = 4/5$ olur."
+                    }
+                ]
+            },
+            fizik: {
+                studyCards: [
+                    {
+                        title: "1. Isı, Sıcaklık ve İç Enerji",
+                        icon: "🔥",
+                        content: `Birbiri yerine sıkça kullanılan ancak tamamen farklı olan temel kavramlar:
+                        <ul class="list-disc pl-5 mt-1 space-y-1.5 text-xs text-slate-600">
+                            <li><strong>İç Enerji:</strong> Taneciklerin kinetik ve potansiyel enerjilerinin toplamıdır.</li>
+                            <li><strong>Sıcaklık:</strong> Ortalama kinetik enerjinin bir göstergesidir. Termometreyle ölçülür. Birimi Kelvin veya Celcius'tur. <strong>Enerji değildir!</strong></li>
+                            <li><strong>Isı:</strong> Sıcaklık farkından dolayı aktarılan enerjidir. Kalorimetre kabıyla ölçülür.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "2. Öz Isı ve Isı Sığası",
+                        icon: "🧪",
+                        content: `Maddelerin sıcaklık değişim kapasitesini belirleyen niceliklerdir:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Öz Isı ($c$):</strong> Saf bir maddenin $1\\text{ g}$'ını $1^\\circ\\text{C}$ artırmak için gereken ısıdır. <strong>Ayırt edicidir.</strong> Öz ısısı büyük olan geç ısınır.</li>
+                            <li><strong>Isı Sığası ($m \\cdot c$):</strong> Maddenin tamamını ısıtmak için gereken ısıdır. Kütleye bağlıdır, ayırt edici değildir.</li>
+                        </ul>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 mt-2 text-xs text-center font-mono">
+                            Sıcaklık Değişimi: $Q = m \\cdot c \\cdot \\Delta T$ (Kel Macit)
+                        </div>`
+                    },
+                    {
+                        title: "3. Hal Değişimi",
+                        icon: "❄️",
+                        content: `Saf maddelerin ısı alarak veya vererek faz değiştirmesidir.
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li>Hal değişimi esnasında saf maddelerin <strong>sıcaklığı sabit kalır.</strong></li>
+                            <li>Hal değişim Isısı ($L$): $1\\text{ g}$ maddenin hal değiştirmesi için gereken ısıdır.</li>
+                        </ul>
+                        <div class="bg-cyan-50/50 p-3 rounded-xl border border-cyan-100 mt-2 text-xs text-center font-mono">
+                            Hal Değişimi Formülü: $Q = m \\cdot L$ (Kâmil)
+                        </div>`
+                    },
+                    {
+                        title: "4. Isıl Denge ve Isı Alışverişi",
+                        icon: "⚖️",
+                        content: `Farklı sıcaklıktaki iki madde birbirine temas ettirildiğinde daima <strong>sıcaktan soğuğa</strong> doğru ısı aktarılır.
+                        <ul class="list-disc pl-5 mt-1 space-y-1.5 text-xs text-slate-600">
+                            <li>Isı aktarımı <strong>sıcaklıklar eşitlenene kadar</strong> devam eder.</li>
+                            <li>Sıcaklıklar eşitlendiğinde Isıl Denge sağlanır ($T_{denge}$).</li>
+                            <li>$Q_{alinan} = Q_{verilen}$ kuralı geçerlidir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "5. Isı İletim Yolları",
+                        icon: "📡",
+                        content: `Isı üç farklı mekanizma ile yayılabilir:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>İletim:</strong> Titreşimle yanındakine aktarmadır. Katılarda görülür.</li>
+                            <li><strong>Konveksiyon:</strong> Isınan sıvı/gazın hafifleyip yükselmesiyle olan taşınmadır.</li>
+                            <li><strong>Işıma (Radyasyon):</strong> Elektromanyetik dalgalarla yayılmadır. Boşlukta (uzayda) da yayılabilir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "6. Katı ve Sıvılarda Genleşme",
+                        icon: "🌡️",
+                        content: `Isı alan maddelerin boyutlarında meydana gelen artışa genleşme denir.
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li>Genleşme miktarı; ilk boya, sıcaklık değişimine ve maddenin cinsine (genleşme katsayısı) bağlıdır.</li>
+                            <li>Suyun özel durumu: Su $+4^\\circ\\text{C}$'de en küçük hacme ve en büyük özkütleye sahiptir. Bu yüzden göller <strong>üstten</strong> donmaya başlar.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "7. Elektrik Yükleri ve Elektrostatik",
+                        icon: "⚡",
+                        content: `Maddelerin yapısındaki proton ($+$) ve elektronların ($-$) dengesiyle ilgilidir.
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li>Protonlar çekirdekte sabit kalır, <strong>hareket edenler daima elektronlardır ($-$).</strong></li>
+                            <li>Aynı yükler birbirini iter, zıt yükler birbirini çeker. Nötr cisimler ise yüklü cisimler tarafından çekilebilir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "8. Elektriklenme Çeşitleri",
+                        icon: "🔄",
+                        content: `Cisimlerin yük kazanma yöntemleri üç tanedir:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Sürtünme:</strong> Biri elektron verir ($-$), diğeri alır ($+$). Yük miktarları aynı, cinsleri zıt olur. (Cam-İpek, Ebonit-Yün).</li>
+                            <li><strong>Dokunma:</strong> Toplam yük kapasitelerine (yarıçap) göre paylaşılır. Son durumda cisimlerin yük işaretleri kesinlikle <strong>aynıdır</strong>.</li>
+                            <li><strong>Etki (Tesir):</strong> Temas olmadan yüklerin kutuplaşmasıdır.</li>
+                        </ul>`
+                    }
+                ],
+                questions: [
+                    {
+                        question: "Aşağıdakilerden hangisi bir enerji türü değildir ve termometre ile ölçülür?",
+                        options: [
+                            { text: "Isı", isCorrect: false },
+                            { text: "İç Enerji", isCorrect: false },
+                            { text: "Sıcaklık", isCorrect: true },
+                            { text: "Kinetik Enerji", isCorrect: false }
+                        ],
+                        hint: "İnsanların günlük dilde 'havanın ısısı 30 derece' diyerek sıklıkla yanlış kullandığı, birimi Santigrat olan temel büyüklüktür.",
+                        explanation: "Sıcaklık bir enerji türü değildir. Maddeyi oluşturan taneciklerin ortalama kinetik enerjisinin bir göstergesidir ve termometre ile ölçülür."
+                    },
+                    {
+                        question: "Güneş'in Dünya'mızı ısıtması, ısının hangi yayılma yoluyla gerçekleştiğine örnektir?",
+                        options: [
+                            { text: "İletim", isCorrect: false },
+                            { text: "Konveksiyon (Taşıma)", isCorrect: false },
+                            { text: "Işıma (Radyasyon)", isCorrect: true },
+                            { text: "Genleşme", isCorrect: false }
+                        ],
+                        hint: "Uzay boşluğunda madde (hava, sıvı vb.) yoktur. Isının boşlukta yayılabilen tek yolu budur.",
+                        explanation: "Işıma (radyasyon), ısının elektromanyetik dalgalarla yayılmasıdır ve yayılmak için maddesel bir ortama (katı, sıvı, gaz) ihtiyaç duymaz. Bu sayede uzay boşluğunu geçerek Dünya'ya ulaşır."
+                    },
+                    {
+                        question: "$10\\text{ g}$ kütleli saf suyu $20^\\circ\\text{C}$'den $50^\\circ\\text{C}$'ye çıkarmak için verilmesi gereken ısı kaç kaloridir? ($c_{su} = 1\\text{ cal/g}\\cdot^\\circ\\text{C}$)",
+                        options: [
+                            { text: "100", isCorrect: false },
+                            { text: "200", isCorrect: false },
+                            { text: "300", isCorrect: true },
+                            { text: "500", isCorrect: false }
+                        ],
+                        hint: "Kel Macit ($Q = m \\cdot c \\cdot \\Delta T$) formülünü uygula. Buradaki $\\Delta T$ sıcaklık farkıdır.",
+                        explanation: "Sıcaklık değişimi: $\\Delta T = 50 - 20 = 30^\\circ\\text{C}$.<br>Formül: $Q = m \\cdot c \\cdot \\Delta T = 10 \\cdot 1 \\cdot 30 = 300\\text{ kalori}$."
+                    },
+                    {
+                        question: "$0^\\circ\\text{C}$'deki $50\\text{ g}$ buzu tamamen eritmek için kaç kalori ısı gerekir? ($L_{erime} = 80\\text{ cal/g}$)",
+                        options: [
+                            { text: "400", isCorrect: false },
+                            { text: "800", isCorrect: false },
+                            { text: "4000", isCorrect: true },
+                            { text: "8000", isCorrect: false }
+                        ],
+                        hint: "Sıcaklık değişmiyor, hal değişiyor. Kâmil ($Q = m \\cdot L$) formülünü kullan.",
+                        explanation: "Hal değişimi formülü: $Q = m \\cdot L_e$.<br> $Q = 50\\text{ g} \\times 80\\text{ cal/g} = 4000\\text{ cal}$ olarak hesaplanır."
+                    },
+                    {
+                        question: "Farklı sıcaklıktaki X ve Y cisimleri ısı yalıtılmış bir ortamda yan yana konuluyor. Isı akışının yönünü aşağıdakilerden hangisi belirler?",
+                        options: [
+                            { text: "Kütleleri", isCorrect: false },
+                            { text: "Isı sığaları", isCorrect: false },
+                            { text: "Sıcaklıkları", isCorrect: true },
+                            { text: "Öz ısıları", isCorrect: false }
+                        ],
+                        hint: "Isı her zaman değeri fazla olandan düşük olana doğru akar. Şartı belirleyen tek nicelik derece ile ölçülen değerdir.",
+                        explanation: "Isı akışı daima sıcak olan maddeden soğuk olan maddeye doğrudur. Akış yönünü kütle veya ısı miktarı değil, sadece sıcaklık farkı belirler."
+                    },
+                    {
+                        question: "Kışın göllerin tabanından değil de yüzeyinden (üstten) donmaya başlamasının temel nedeni aşağıdakilerden hangisidir?",
+                        options: [
+                            { text: "Havanın çok soğuk olması", isCorrect: false },
+                            { text: "Suyun $+4^\\circ\\text{C}$'de en yüksek özkütleye sahip olması", isCorrect: true },
+                            { text: "Buzun ısıyı iyi iletmesi", isCorrect: false },
+                            { text: "Göllerin sığ (derinliğinin az) olması", isCorrect: false }
+                        ],
+                        hint: "Su soğurken $+4$ dereceye kadar hacmi küçülür ve ağırlaşarak dibe çöker. Ancak $+4$'ten sonra donarken genleşerek hafifler ve yukarı çıkar.",
+                        explanation: "Su $+4^\\circ\\text{C}$'de maksimum özkütleye sahiptir ve gölün dibine çöker. Donan su (buz) ise genleştiği için hafifler ve yüzeye çıkar. Bu özel durum sayesinde göller üstten donar ve dipteki canlılar hayatta kalır."
+                    },
+                    {
+                        question: "Sürtünme ile elektriklenen iki nötr yalıtkan cisim (örneğin cam ve ipek) için hangisi <u>kesinlikle</u> doğrudur?",
+                        options: [
+                            { text: "Aynı cins yükle yüklenirler.", isCorrect: false },
+                            { text: "Proton alışverişi yaparlar.", isCorrect: false },
+                            { text: "Yük miktarları birbirine eşit, cinsleri zıttır.", isCorrect: true },
+                            { text: "Biri yüklü diğeri nötr kalır.", isCorrect: false }
+                        ],
+                        hint: "Elektron veren eksi yükünü kaybettiği için +, elektron alan ise - olur. Verilen ile alınan sayı eşit olduğundan miktarlar aynındır.",
+                        explanation: "Sürtünmeyle elektriklenmede alınan elektron sayısı verilen elektron sayısına eşittir. Bu yüzden cisimler eşit büyüklükte ancak zıt işaretli yüklenirler (Biri $+q$, diğeri $-q$). Hareket eden daima elektrondur, proton hareket etmez."
+                    },
+                    {
+                        question: "Aşağıdaki yüklü cisim çiftlerinden hangileri birbirine <u>çekme kuvveti</u> uygular?",
+                        options: [
+                            { text: "Pozitif (+) ile Pozitif (+)", isCorrect: false },
+                            { text: "Negatif (-) ile Negatif (-)", isCorrect: false },
+                            { text: "Pozitif (+) ile Negatif (-)", isCorrect: true },
+                            { text: "Nötr ile Nötr", isCorrect: false }
+                        ],
+                        hint: "Mıknatısların farklı (zıt) kutuplarının birbirine gösterdiği etkiyi hatırla.",
+                        explanation: "Elektrostatikte aynı cins yükler (örneğin + ile +) birbirini iterken, zıt cins yükler (+ ile -) birbirini çeker."
+                    },
+                    {
+                        question: "Yarıçapları $r$ ve $2r$ olan iki iletken küre sırasıyla $+10q$ ve $-4q$ yüke sahiptir. Bu küreler birbirine dokundurulup ayrıldığında, $2r$ yarıçaplı kürenin son yükü ne olur?",
+                        options: [
+                            { text: "+2q", isCorrect: false },
+                            { text: "+4q", isCorrect: true },
+                            { text: "-2q", isCorrect: false },
+                            { text: "-4q", isCorrect: false }
+                        ],
+                        hint: "Önce toplam yükü bul (+10 -4 = +6). Sonra bu yükü yarıçaplarıyla orantılı (1'e 2 oranında) paylaştır.",
+                        explanation: "Toplam Yük: $+10q - 4q = +6q$. Toplam Yarıçap: $r + 2r = 3r$.<br>Yarıçap başına düşen yük: $+6q / 3r = +2q/r$.<br>$2r$ yarıçaplı kürenin payı: $2 \\times (+2q) = +4q$ olur."
+                    },
+                    {
+                        question: "Binaların dış cephelerine yalıtım malzemesi (köpük vs.) kaplanmasının temel fiziksel amacı nedir?",
+                        options: [
+                            { text: "Duvarın ısı iletim hızını azaltarak içerideki ısıyı korumak", isCorrect: true },
+                            { text: "Duvarın genleşmesini engellemek", isCorrect: false },
+                            { text: "Güneşten gelen ışıma (radyasyon) hızını artırmak", isCorrect: false },
+                            { text: "Evin ağırlığını artırmak", isCorrect: false }
+                        ],
+                        hint: "Yalıtkan maddelerin katsayısı ($k$) düşüktür. Formülde hız, katsayı ile doğru orantılıdır.",
+                        explanation: "Isı yalıtım malzemeleri (köpük, cam yünü, durgun hava vb.) düşük ısı iletim katsayısına ($k$) sahiptir. Bu sayede duvardan dışarıya olan ısı iletim hızını azaltır ve enerji tasarrufu sağlar."
+                    }
+                ]
+            },
+            kimya: {
+                studyCards: [
+                    {
+                        title: "1. Kimyasal Türler",
+                        icon: "⚛️",
+                        content: `Maddenin yapı taşlarını oluşturan türler 3 çeşittir:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Atom:</strong> Elementin en küçük birimi ($He, Fe, Na$).</li>
+                            <li><strong>Molekül:</strong> Ametal atomlarının kovalent bağla birleştiği nötr gruplardır ($H_2O, O_2, CO_2$).</li>
+                            <li><strong>İyon:</strong> Yüklü taneciklerdir. Pozitif olanlara katyon ($K^+$), negatif olanlara anyon ($Cl^-$) denir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "2. Güçlü Etkileşimler (Kimyasal Bağlar)",
+                        icon: "⚡",
+                        content: `Atomları bir arada tutan çekimlerdir:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>İyonik Bağ:</strong> Metalin elektron verip ametalin almasıyla oluşan zıt kutup çekimidir ($NaCl$). Katı halde elektriği iletmezler.</li>
+                            <li><strong>Kovalent Bağ:</strong> Ametaller arası elektron ortaklaşmasıdır. Aynı atomlar apolar, farklı atomlar polar bağ kurar.</li>
+                            <li><strong>Metalik Bağ:</strong> Metal atomlarının elektron denizindeki çekimidir. Metallere parlaklık ve iletkenlik verir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "3. Zayıf Etkileşimler (Fiziksel Bağlar)",
+                        icon: "🧬",
+                        content: `Molekülleri bir arada tutarak maddenin fiziksel halini (erime/kaynama noktası) belirler:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Van der Waals:</strong> Dipol-Dipol (polar moleküller arası) ve London (apolar molekül ve soygazlar arası). London kuvvetleri en zayıf etkileşimdir.</li>
+                            <li><strong>Hidrojen Bağı:</strong> Elektronegatifliği yüksek olan <strong>F, O, N</strong> atomlarına Hidrojenin bağlı olduğu polar moleküller ($H_2O, NH_3$) arasında kurulur. Zayıfların en güçlüsüdür.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "4. Fiziksel ve Kimyasal Değişim",
+                        icon: "🎨",
+                        content: `Maddede meydana gelen değişimlerin ayrımı klasiktir:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Fiziksel:</strong> Sadece şekil ve hal değişimidir. Hal değişimleri (erime, kaynama) ve tuzun/şekerin suda çözünmesi, metallerin iletkenliği fizikseldir.</li>
+                            <li><strong>Kimyasal:</strong> Maddenin kimliği değişir. Yanma, paslanma, mayalanma, elektroliz ve tuzlu suyun iletkenliği kimyasaldır.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "5. Maddenin Halleri: Katı ve Sıvılar",
+                        icon: "🧊",
+                        content: `Maddenin tanecikli yapısı:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Katılar:</strong> Amorf (düzensiz dizilim, cam/plastik) ve Kristal (düzenli dizilim, tuz/elmas) olarak ikiye ayrılır.</li>
+                            <li><strong>Viskozite:</strong> Sıvıların akmaya karşı direncidir. Moleküller arası çekimi güçlü olan bal gibi sıvıların viskozitesi büyüktür. Sıcaklık artarsa viskozite düşer.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "6. Maddenin Halleri: Gazlar ve Plazma",
+                        icon: "☁️",
+                        content: `Gazlar maddenin en yüksek enerjili ve düzensiz hallerinden biridir.
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Gazlar:</strong> Belirli hacim ve şekilleri yoktur, bulundukları kabı doldururlar ve sıkıştırılabilirler.</li>
+                            <li><strong>Plazma:</strong> Gazlara çok yüksek enerji verilerek elektronların koptuğu, artı ve eksi iyonların serbest gezdiği haldir (İyonize gaz). Elektriği iletir (Güneş, şimşek, florasan).</li>
+                        </ul>`
+                    },
+                    {
+                        title: "7. Doğa ve Kimya (Su ve Hayat)",
+                        icon: "💧",
+                        content: `Dünyadaki su kaynakları ve suyun sertliği:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li>İçerisinde çok miktarda Kalsiyum ($Ca^{2+}$) ve Magnezyum ($Mg^{2+}$) iyonu bulunduran sulara <strong>Sert Su</strong> denir. Sert sular sabunu köpürtmez, çaydanlıklarda kireç bırakır.</li>
+                            <li>Bu iyonları az bulunduran sular ise <strong>Yumuşak Su</strong>'dur. Tatları daha güzeldir ve daha verimlidir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "8. Çevre Kimyası",
+                        icon: "🌍",
+                        content: `Çevre kirliliğine neden olan gazlar ve etkileri:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Sera Etkisi:</strong> $CO_2, CH_4$ gibi gazların yeryüzünden yansıyan güneş ışınlarını tutarak dünyayı fazladan ısıtmasıdır (Küresel Isınma).</li>
+                            <li><strong>Asit Yağmurları:</strong> Fabrika ve egzozlardan çıkan $SO_x$ ve $NO_x$ gazlarının bulutlardaki suyla birleşip asit olarak yeryüzüne düşmesidir.</li>
+                        </ul>`
+                    }
+                ],
+                questions: [
+                    {
+                        question: "Aşağıda verilen kimyasal tür örneklerinden hangisi yanlış eşleştirilmiştir?",
+                        options: [
+                            { text: "Helyum ($He$) - Atom", isCorrect: false },
+                            { text: "Su ($H_2O$) - Molekül", isCorrect: false },
+                            { text: "Karbondioksit ($CO_2$) - Atom", isCorrect: true },
+                            { text: "Sodyum iyonu ($Na^+$) - Katyon", isCorrect: false }
+                        ],
+                        hint: "Karbon ve oksijen olmak üzere birden fazla ametal atomunun birleştiği yapılar atom olamaz.",
+                        explanation: "$CO_2$ birden çok ametal atomunun kovalent bağla birleşmesiyle oluşmuştur, bu yüzden bir atom değil, moleküldür."
+                    },
+                    {
+                        question: "İyonik bileşiklerle ilgili aşağıdakilerden hangisi <u>yanlıştır</u>?",
+                        options: [
+                            { text: "Metal ve ametal atomları arasında elektron alışverişiyle oluşur.", isCorrect: false },
+                            { text: "Katı halde elektrik akımını iyi iletirler.", isCorrect: true },
+                            { text: "Erime ve kaynama noktaları genellikle yüksektir.", isCorrect: false },
+                            { text: "Suda çözündüklerinde iyonlarına ayrışırlar.", isCorrect: false }
+                        ],
+                        hint: "Tuzu (NaCl) düşün. Katı tuz elektriği iletmez, ancak suya atarsan tuzlu su elektriği iletir.",
+                        explanation: "İyonik bileşikler kristal örgü yapısında olduklarından katı halde iyonları sabittir ve elektriği iletmezler. Sadece sıvı (erimiş) halleri ve sulu çözeltileri serbest iyonlar sayesinde elektriği iletir."
+                    },
+                    {
+                        question: "Aşağıdaki moleküllerin hangisinde atomlar arasında <u>apolar</u> kovalent bağ bulunur?",
+                        options: [
+                            { text: "$HCl$", isCorrect: false },
+                            { text: "$H_2O$", isCorrect: false },
+                            { text: "$O_2$", isCorrect: true },
+                            { text: "$NH_3$", isCorrect: false }
+                        ],
+                        hint: "Apolar bağın oluşması için elektronların her iki atom tarafından eşit çekilmesi, yani 'aynı' tür atomlar olması gerekir.",
+                        explanation: "Aynı tür ametal atomları arasındaki elektron ortaklaşmasına apolar (kutupsuz) kovalent bağ denir. $O_2$ molekülünde oksijen atomları aynıdır."
+                    },
+                    {
+                        question: "Aşağıda verilen olaylardan hangisi <u>fiziksel</u> bir değişimdir?",
+                        options: [
+                            { text: "Demirin paslanması", isCorrect: false },
+                            { text: "Sütün mayalanarak yoğurt olması", isCorrect: false },
+                            { text: "Metallerin elektrik akımını iletmesi", isCorrect: true },
+                            { text: "Suyun elektroliz edilerek H2 ve O2 gazlarına ayrılması", isCorrect: false }
+                        ],
+                        hint: "Metaller elektriği iletirken elektron denizi içindeki elektronlar hareket eder, maddenin kendi yapısı ve kimliği bozulmaz.",
+                        explanation: "Metallerin elektriği iletmesi sadece elektronların hareketiyle (fiziksel) gerçekleşirken; paslanma, mayalanma ve elektroliz olaylarında maddenin kimliği değişerek yeni maddeler oluşur (kimyasal)."
+                    },
+                    {
+                        question: "Sıvıların akmaya karşı gösterdiği dirence ne ad verilir?",
+                        options: [
+                            { text: "Buharlaşma", isCorrect: false },
+                            { text: "Viskozite", isCorrect: true },
+                            { text: "Esneklik", isCorrect: false },
+                            { text: "Yoğunlaşma", isCorrect: false }
+                        ],
+                        hint: "Balın sudan daha yavaş akmasını sağlayan, molekülleri arasındaki iç sürtünme direncini hatırlayın.",
+                        explanation: "Sıvıların akmaya karşı gösterdiği dirence viskozite denir. Viskozitesi büyük olan sıvıların akıcılığı düşüktür."
+                    },
+                    {
+                        question: "Cam, plastik ve tereyağı gibi belirli bir kristal (geometrik) yapısı olmayan ve net bir erime noktası yerine belli bir sıcaklık aralığında yumuşayan katılara ne ad verilir?",
+                        options: [
+                            { text: "İyonik Kristal", isCorrect: false },
+                            { text: "Kovalent Kristal", isCorrect: false },
+                            { text: "Amorf Katı", isCorrect: true },
+                            { text: "Metalik Katı", isCorrect: false }
+                        ],
+                        hint: "Düzensiz, şekilsiz anlamına gelen ve cam gibi maddeleri tanımlayan katı türüdür.",
+                        explanation: "Belirli bir geometrik düzeni olmayan, ısıtıldıklarında belli bir sıcaklık aralığında yumuşayan katılara Amorf Katılar denir (Örn: Cam, plastik, tereyağı)."
+                    },
+                    {
+                        question: "Maddenin plazma hali ile ilgili aşağıda verilen bilgilerden hangisi yanlıştır?",
+                        options: [
+                            { text: "Evrendeki en yaygın madde halidir.", isCorrect: false },
+                            { text: "Elektrik ve manyetik alandan etkilenmezler.", isCorrect: true },
+                            { text: "Güneş, yıldızlar ve yıldırım birer plazma örneğidir.", isCorrect: false },
+                            { text: "İyon, elektron ve nötr atomların bir arada bulunduğu karışımlardır.", isCorrect: false }
+                        ],
+                        hint: "Plazmalar içerisinde bolca artı (katyon) ve eksi (elektron) serbest yük barındırırlar. Yüklü ortamlar mıknatıs ve elektrikten etkilenir mi?",
+                        explanation: "Plazma hali bol miktarda serbest elektron ve pozitif iyon içerdiği için elektriği iletir ve elektrik/manyetik alanlardan doğrudan etkilenir. Bu yüzden yanlıştır."
+                    },
+                    {
+                        question: "Bileşiminde bol miktarda kalsiyum ($Ca^{2+}$) ve magnezyum ($Mg^{2+}$) iyonları bulunduran sulara ne ad verilir?",
+                        options: [
+                            { text: "Yumuşak Su", isCorrect: false },
+                            { text: "Saf Su", isCorrect: false },
+                            { text: "Sert Su", isCorrect: true },
+                            { text: "Ağır Su", isCorrect: false }
+                        ],
+                        hint: "Çaydanlıkların dibinde kireç (tortu) bırakan ve sabunu köpürtmeyen suların halk arasındaki adıdır.",
+                        explanation: "Kalsiyum ve magnezyum iyonlarını fazla miktarda içeren sulara Sert Su (kireçli su) denir. Bu sular temizlikte sabunu köpürtmez ve makinelere zarar verebilir."
+                    },
+                    {
+                        question: "Fosil yakıtların aşırı kullanımı sonucunda atmosfere salınan Karbondioksit ($CO_2$) gazının miktarının artması, Dünya'nın yansıyan ısıyı uzaya gönderememesine yol açar. Bu olaya ne denir?",
+                        options: [
+                            { text: "Sera Etkisi (Küresel Isınma)", isCorrect: true },
+                            { text: "Ozon Tabakasının Delinmesi", isCorrect: false },
+                            { text: "Asit Yağmurları", isCorrect: false },
+                            { text: "Ötrofikasyon", isCorrect: false }
+                        ],
+                        hint: "Kışın bitkilerin üşümemesi için cam veya naylondan kurulan ısıyı hapseden yapıların ismiyle aynıdır.",
+                        explanation: "Özellikle $CO_2$ (Karbondioksit) ve $CH_4$ (Metan) gazlarının atmosferde birikerek güneşten gelip yeryüzünden yansıyan ısıyı tutmasına Sera Etkisi denir. Bu durum küresel ısınmaya yol açar."
+                    },
+                    {
+                        question: "Su ($H_2O$) molekülleri arasında bulunan, suyun kaynama noktasını diğer sıvılara göre çok yükseğe taşıyan en güçlü zayıf etkileşim türü hangisidir?",
+                        options: [
+                            { text: "London kuvvetleri", isCorrect: false },
+                            { text: "Dipol-dipol etkileşimi", isCorrect: false },
+                            { text: "Hidrojen Bağı", isCorrect: true },
+                            { text: "İyonik bağ", isCorrect: false }
+                        ],
+                        hint: "Hidrojen atomunun Flor (F), Oksijen (O) veya Azot (N) atomlarına bağlı olduğu özel moleküllerde görülür.",
+                        explanation: "Hidrojen atomunun çok elektronegatif olan Oksijene bağlı olduğu su ($H_2O$) moleküllerini birbirine kenetleyen fiziksel bağ Hidrojen Bağı'dır. Zayıf etkileşimlerin en güçlüsü olduğu için suyu kaynatmak zordur."
+                    }
+                ]
+            },
+            biyoloji: {
+                studyCards: [
+                    {
+                        title: "1. Hücre Zarından Geçiş (Küçük Moleküller)",
+                        icon: "🚪",
+                        content: `Küçük moleküller fosfolipit tabakasından veya kanal proteinlerinden geçer:
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Pasif Taşıma (Enerji Yok):</strong> Çoktan aza doğrudur. Basit difüzyon (gazlar geçer), Kolaylaştırılmış difüzyon (taşıyıcı protein kullanılır) ve Ozmoz (suyun geçişi).</li>
+                            <li><strong>Aktif Taşıma (ATP Harcanır):</strong> Az yoğun ortamdan çok yoğun ortama (veya eşit ortamlara) maddedir. Taşıyıcı protein ve enzim kullanılır. Sadece canlılarda olur.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "2. Ozmoz ve Çözeltiler",
+                        icon: "💧",
+                        content: `Hücrenin ortamın yoğunluğuna göre su alıp vermesidir:
+                        <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                            <li><strong>Hipertonik Ortam (Çok Yoğun):</strong> Hücre su kaybeder ve büzüşür <strong>(Plazmoliz)</strong>.</li>
+                            <li><strong>Hipotonik Ortam (Az Yoğun):</strong> Hücre su alır ve şişer <strong>(Deplazmoliz)</strong>. Fazla şişip zara baskı yaparsa <strong>Turgor</strong> olur.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "3. Endositoz ve Ekzositoz (Büyük Moleküller)",
+                        icon: "📦",
+                        content: `Polimerlerin zardan geçemediği durumlarda daima ATP harcanarak koful ile taşınmadır.
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Endositoz (İçeri Alma):</strong> Zar içeri çöker, koful oluşur, zar yüzeyi <strong>küçülür</strong>. Hücre çeperi olan bitki ve mantarlar bunu yapamaz!</li>
+                            <li><strong>Ekzositoz (Dışarı Atma):</strong> Salgı ve atık kofulunun zarla birleşip atılmasıdır. Zar yüzeyi <strong>büyür</strong>. Çeperli canlılar yapabilir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "4. Sınıflandırma ve Taksonomi",
+                        icon: "🏷️",
+                        content: `Canlıları köken (homolog organ) ve genetik benzerliğine göre sınıflandırmaya Doğal (Filogenetik) sınıflandırma denir.
+                        <ul class="list-disc pl-5 mt-1 text-xs text-slate-600">
+                            <li><strong>Sıralama:</strong> Tür $\\rightarrow$ Cins $\\rightarrow$ Aile $\\rightarrow$ Takım $\\rightarrow$ Sınıf $\\rightarrow$ Şube $\\rightarrow$ Alem.</li>
+                            <li>Türden aleme doğru gidildikçe birey sayısı artar, ortak gen ve akrabalık azalır.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "5. Bakteri ve Arkeler (Prokaryotlar)",
+                        icon: "🦠",
+                        content: `Çekirdeği ve zarlı organeli olmayan canlılardır:
+                        <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                            <li><strong>Bakteriler:</strong> Tümünde hücre zarı, ribozom ve halkasal DNA vardır. Sadece bazılarında kapsül ve endospor bulunur. Depo karbonhidratı glikojendir.</li>
+                            <li><strong>Arkeler:</strong> Ekstrem koşullarda (aşırı tuzlu, sıcak vb.) yaşarlar. Metanojenler biyogaz üretir.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "6. Bitki ve Mantar Alemi",
+                        icon: "🍄",
+                        content: `Ökaryotik ve çeperli alemler:
+                        <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                            <li><strong>Bitkiler:</strong> Ototroftur (fotosentez yapar). Çeperi selülozdur. Nişasta depolar.</li>
+                            <li><strong>Mantarlar:</strong> Klorofili yoktur, fotosentez yapamaz (Heterotroftur). Çeperi kitindir. Tıpkı hayvanlar gibi glikozu <strong>glikojen</strong> olarak depolar.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "7. Hayvanlar Alemi",
+                        icon: "🦁",
+                        content: `Hücre çeperi olmayan, çok hücreli, heterotrof ve glikojen depolayan canlılardır.
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li><strong>Omurgasızlar:</strong> Süngerler, Sölenterler, Solucanlar, Yumuşakçalar, Eklembacaklılar, Derisidikenliler.</li>
+                            <li><strong>Omurgalılar:</strong> Balıklar, İkiyaşamlılar (Kurbağalar), Sürüngenler, Kuşlar ve Memeliler.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "8. Virüslerin Yapısı",
+                        icon: "☣️",
+                        content: `Virüsler canlı ve cansız sınırında bulunan yapılardır.
+                        <ul class="list-disc pl-5 mt-1 space-y-2 text-xs text-slate-600">
+                            <li>Sitoplazması, organelleri ve enzimleri yoktur. Hücre yapısı göstermezler.</li>
+                            <li>Sadece bir protein kılıf ve içinde tek bir yönetici molekülden (ya DNA ya RNA) oluşurlar.</li>
+                            <li>Çoğalabilmek için mutlaka <strong>canlı bir konak hücreye</strong> girmek zorundadırlar (Zorunlu hücre içi parazit).</li>
+                        </ul>`
+                    }
+                ],
+                questions: [
+                    {
+                        question: "Yoğunluğu bilinmeyen bir bitki hücresi, kendisinden çok daha yoğun (hipertonik) bir tuz çözeltisine konduğunda su kaybederek büzüşmüştür. Bu olaya ne ad verilir?",
+                        options: [
+                            { text: "Turgor", isCorrect: false },
+                            { text: "Deplazmoliz", isCorrect: false },
+                            { text: "Plazmoliz", isCorrect: true },
+                            { text: "Hemoliz", isCorrect: false }
+                        ],
+                        hint: "Hücrenin yoğun ortamda su vererek büzüşmesine verilen isimdir.",
+                        explanation: "Hücre kendisinden daha yoğun (hipertonik) ortama bırakılırsa osmoz kuralları gereği su kaybeder ve büzüşür. Bu olaya plazmoliz denir."
+                    },
+                    {
+                        question: "Aktif taşıma ve kolaylaştırılmış difüzyon olaylarında aşağıdakilerden hangisi ortak olarak gerçekleşir?",
+                        options: [
+                            { text: "Zardaki taşıyıcı proteinlerin görev yapması", isCorrect: true },
+                            { text: "ATP (enerji) harcanması", isCorrect: false },
+                            { text: "Maddenin az yoğundan çok yoğuna geçmesi", isCorrect: false },
+                            { text: "Sadece canlı hücrelerde gerçekleşmesi", isCorrect: false }
+                        ],
+                        hint: "Her iki taşıma şeklinde de zardan doğrudan geçemeyen moleküller için zarda özel kapı görevindeki yapılar kullanılır.",
+                        explanation: "Kolaylaştırılmış difüzyonda enerji (ATP) harcanmazken aktif taşımada harcanır. Ancak her ikisinde de küçük moleküller zardaki özel taşıyıcı proteinler yardımıyla taşınır."
+                    },
+                    {
+                        question: "Amip gibi tek hücreli bir canlının büyük ve katı besin maddelerini yalancı ayak oluşturarak hücre içine almasına (fagositoz) endositoz denir. Aşağıdaki hücrelerden hangisi çeperi olduğu için kesinlikle endositoz yapamaz?",
+                        options: [
+                            { text: "Akyuvar hücresi (İnsan)", isCorrect: false },
+                            { text: "Bitki kök hücresi", isCorrect: true },
+                            { text: "Paramesyum (Terliksi hayvan)", isCorrect: false },
+                            { text: "Karaciğer hücresi", isCorrect: false }
+                        ],
+                        hint: "Hücre zarının hemen dışında bulunan sert, esnemez koruyucu katman içeri doğru çökmeyi engeller.",
+                        explanation: "Hücre duvarı (çeperi) bulunan bakteri, bitki ve mantar hücreleri zarlarını esneterek yalancı ayak veya çöküntü oluşturamaz. Bu yüzden endositoz yapamazlar."
+                    },
+                    {
+                        question: "Canlıların bilimsel (doğal) sınıflandırılmasında, iki canlının <u>kesinlikle aynı türden</u> kabul edilmesi için sağlanması gereken en önemli şart nedir?",
+                        options: [
+                            { text: "Kromozom sayılarının aynı olması", isCorrect: false },
+                            { text: "Aynı yaşam alanını paylaşmaları", isCorrect: false },
+                            { text: "Ortak genlere sahip olmaları", isCorrect: false },
+                            { text: "Çiftleştiklerinde verimli (kısır olmayan) döller oluşturabilmeleri", isCorrect: true }
+                        ],
+                        hint: "At ve eşekten katır (kısır yavru) olur, ancak aynı türden sayılmazlar.",
+                        explanation: "Biyolojide iki canlının aynı tür olmasının tek kesin kanıtı, kendi aralarında çiftleşip üreme yeteneği olan (verimli) nesiller verebilmeleridir."
+                    },
+                    {
+                        question: "Türden Aleme doğru (Alem en genel grup) gidildikçe canlıların özelliklerinde meydana gelen değişimle ilgili hangisi yanlıştır?",
+                        options: [
+                            { text: "Birey sayısı artar.", isCorrect: false },
+                            { text: "Canlı çeşitliliği artar.", isCorrect: false },
+                            { text: "Ortak gen sayısı artar.", isCorrect: true },
+                            { text: "Protein benzerliği azalır.", isCorrect: false }
+                        ],
+                        hint: "Alem grubunda hayvanların tümü varken tür grubunda sadece tek bir canlı (örn: Aslan) vardır. Büyük gruba gittikçe akrabalık azalır.",
+                        explanation: "Türden aleme gidildikçe gruba dahil olan canlı sayısı artar ve akrabalık ilişkisi uzaklaşır. Akrabalık uzaklaştığı için ortak gen ve protein benzerliği artmaz, aksine azalır."
+                    },
+                    {
+                        question: "Bakteriler alemindeki canlıların <u>tamamında</u> protein sentezini gerçekleştirdiği için ortak olarak bulunması zorunlu organel hangisidir?",
+                        options: [
+                            { text: "Kloroplast", isCorrect: false },
+                            { text: "Ribozom", isCorrect: true },
+                            { text: "Mitokondri", isCorrect: false },
+                            { text: "Çekirdek", isCorrect: false }
+                        ],
+                        hint: "Bakteriler prokaryottur, zarlı organelleri (mitokondri, kloroplast) ve çekirdekleri yoktur.",
+                        explanation: "Bakteriler prokaryottur, yani çekirdek ve zarlı organelleri yoktur. Protein sentezi yapan zarsız Ribozom organeli ise tüm canlı hücrelerde (bakteriler dahil) ortaktır."
+                    },
+                    {
+                        question: "Mantarların fotosentez yapamamaları (heterotrof beslenmeleri) ve glikozun fazlasını glikojen olarak depolamaları, onları hangi canlı alemine daha çok benzetmektedir?",
+                        options: [
+                            { text: "Bitkiler Alemi", isCorrect: false },
+                            { text: "Hayvanlar Alemi", isCorrect: true },
+                            { text: "Protista Alemi", isCorrect: false },
+                            { text: "Bakteriler Alemi", isCorrect: false }
+                        ],
+                        hint: "İnsanlar (ve diğerleri) kendi besinini üretemez dışarıdan alır ve kaslarında glikojen saklarlar.",
+                        explanation: "Mantarlar şekil olarak bitkiye benzese de; kendi besinini üretememesi (heterotrof) ve şekeri glikojen olarak depolaması yönüyle hücresel metabolizma açısından hayvanlar alemine daha çok benzer."
+                    },
+                    {
+                        question: "Aşağıdakilerden hangisi Omurgalı Hayvanlar şubesindeki canlı sınıflarından biri değildir?",
+                        options: [
+                            { text: "Kuşlar", isCorrect: false },
+                            { text: "Sürüngenler", isCorrect: false },
+                            { text: "Memeliler", isCorrect: false },
+                            { text: "Eklembacaklılar (Böcekler)", isCorrect: true }
+                        ],
+                        hint: "Böceklerin, örümceklerin veya yengeçlerin sırtlarında bir kemik veya kıkırdak omurga bulunmaz.",
+                        explanation: "Balıklar, İkiyaşamlılar, Sürüngenler, Kuşlar ve Memeliler omurgalıdır. Eklembacaklılar (böcekler, örümcekler vb.) ise omurgasız hayvanlar grubundadır."
+                    },
+                    {
+                        question: "Virüslerin bilim insanları tarafından tam bir 'hücre' olarak kabul edilmemesinin ve cansızlık özelliği göstermesinin temel nedeni aşağıdakilerden hangisidir?",
+                        options: [
+                            { text: "Çok küçük olmaları", isCorrect: false },
+                            { text: "Sadece DNA bulundurmaları", isCorrect: false },
+                            { text: "Kendi başlarına metabolizma (enzim/sitoplazma) yürütemeyip zorunlu hücre içi parazit olmaları", isCorrect: true },
+                            { text: "Hızlı mutasyona uğramaları", isCorrect: false }
+                        ],
+                        hint: "Canlılığın en temel şartı olan sitoplazma ve kendi iç işleyişini sağlayan enzim fabrikasından yoksundurlar.",
+                        explanation: "Virüslerin sitoplazması ve kendi enzim/enerji üreten sistemleri yoktur. Canlılık faaliyeti gösterebilmek ve çoğalmak için mutlaka canlı bir hücrenin içine girmeye mecburdurlar."
+                    },
+                    {
+                        question: "Tatlı sularda yaşayan tek hücreli paramesyum (terliksi hayvan) ve öglenada, hücreye giren fazla suyu ATP harcayarak dışarı pomplayan ve hücrenin patlamasını önleyen yapının adı nedir?",
+                        options: [
+                            { text: "Besin Kofulu", isCorrect: false },
+                            { text: "Kontraktil (Vururgan) Koful", isCorrect: true },
+                            { text: "Hücre Çeperi", isCorrect: false },
+                            { text: "Kloroplast", isCorrect: false }
+                        ],
+                        hint: "Tatlı sular hücreye göre az yoğundur (hipotoniktir) ve içeri sürekli su girer. Bu suyu pompalayan yapının ismi vururgan/kasılgan kelimesinden gelir.",
+                        explanation: "Tatlı su ortamı az yoğun olduğu için tek hücreli canlılara osmozla sürekli su girer. Bu suyu enerji harcayarak dışarı atan ve canlının patlamasını engelleyen organel kontraktil (vururgan) kofuldur."
+                    }
+                ]
+            },
+            edebiyat: {
+                studyCards: [
+                    { title: "1. Şiir Bilgisi (Nazım Biçimleri)", icon: "📜", content: `Şiirin yapı ve ahenk unsurları şunlardır:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Nazım Biçimi:</strong> Şiirin dış yapısıdır (Mani, Koşma, Gazel, Kasiye vb.).</li>
+                        <li><strong>Ölçü (Vezin):</strong> Türk edebiyatında temel olarak iki ölçü vardır: <strong>Hece Ölçüsü</strong> (milli ölçümüz) ve <strong>Aruz Ölçüsü</strong>.</li>
+                        <li><strong>Kafiye (Uyak):</strong> Dize sonlarındaki ses benzerliğidir. Yarım (tek ses), Tam (iki ses), Zengin (üç+ ses) ve Tunç (kelime içinde kelime) kafiye olarak ayrılır.</li>
+                    </ul>` },
+                    { title: "2. Söz Sanatları (Edebi Sanatlar)", icon: "✨", content: `Metne derinlik katmak için kullanılan sanatlardır:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Teşbih (Benzetme):</strong> Zayıf olanın güçlü olana benzetilmesidir (Örn: Aslan gibi asker).</li>
+                        <li><strong>İstiare (Eğretileme):</strong> Benzetmenin temel ögelerinden sadece biriyle (benzeyen veya kendisine benzetilen) yapılır.</li>
+                        <li><strong>Teşhis (Kişileştirme) & İntak (Konuşturma):</strong> İnsan dışı varlıklara insan özelliği verme ve onları konuşturma sanatıdır.</li>
+                    </ul>` },
+                    { title: "3. Masal ve Fabl", icon: "🧚", content: `Halk edebiyatının önemli anonim sözlü ürünleridir:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Masal:</strong> Genellikle tekerleme ile başlar ("Bir varmış, bir yokmuş"). Evrensel konular işler. İyiler daima kazanır, kötüler cezalandırılır. Yer ve zaman tamamen belirsizdir.</li>
+                        <li><strong>Fabl:</strong> Kahramanları ağırlıklı olarak hayvanlar veya bitkiler olan, <strong>öğüt verme (kıssadan hisse)</strong> amacı taşıyan alegorik ve manzum öykülerdir. En ünlü yazar La Fontaine'dir.</li>
+                    </ul>` },
+                    { title: "4. Roman ve Yapı Unsurları", icon: "📚", content: `Roman, yaşanmış veya yaşanması muhtemel olayların anlatıldığı uzun soluklu edebi metinlerdir:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Olay Örgüsü:</strong> Romandaki ana olayın etrafında şekillenen alt olayların (zincirin) tamamıdır.</li>
+                        <li><strong>Kişiler (Şahıs Kadrosu):</strong> Romanda yer alan karakterler ve tiplerdir. Romanın şahıs kadrosu hikayeye kıyasla çok daha geniştir.</li>
+                        <li><strong>Mekan ve Zaman:</strong> Olayların geçtiği çevre çok detaylı tasvir edilir. Zaman dilimi geniştir (yıllar sürebilir).</li>
+                    </ul>` },
+                    { title: "5. Roman Türleri ve İlkler", icon: "🎭", content: `Türk edebiyatında roman Tanzimat dönemiyle girmiştir:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Tarihi Roman:</strong> Konusunu geçmişten alan romanlardır (İlk: Cezmi - Namık Kemal).</li>
+                        <li><strong>İlk Yerli Roman:</strong> Şemsettin Sami'nin yazdığı <strong>Taaşşuk-ı Talat ve Fitnat</strong>'tır.</li>
+                        <li><strong>İlk Edebi Roman:</strong> Namık Kemal'in yazdığı <strong>İntibah</strong>'tır.</li>
+                        <li><strong>İlk Realist Roman:</strong> Recaizade Mahmut Ekrem'in yazdığı <strong>Araba Sevdası</strong>'dır.</li>
+                    </ul>` },
+                    { title: "6. Tiyatro", icon: "🏛️", content: `Sahnede izleyiciye sunulmak üzere kaleme alınan diyalog tabanlı eserlerdir:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Geleneksel Tiyatro:</strong> Yazılı bir metne dayanmaz (Doğaçlama/Tuluat). Örnek: Karagöz (Gölge oyunu), Ortaoyunu (Kavuklu-Pişekar), Meddah, Köy Seyirlik Oyunları.</li>
+                        <li><strong>Modern Tiyatro:</strong> Trajedi (Acıklı olaylar, soylu kişiler), Komedi (Gülünç olaylar, halktan kişiler), Dram (Hayatın hem acı hem tatlı yönleri).</li>
+                    </ul>` },
+                    { title: "7. Biyografi ve Otobiyografi", icon: "👤", content: `Kişilerin hayatlarını anlatan edebi metinlerdir:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Biyografi (Yaşam Öyküsü):</strong> Topluma mal olmuş, sanat, siyaset, spor vb. alanlarda tanınmış bir kişinin hayatının <strong>üçüncü kişi (o)</strong> ağzıyla belgelere dayanılarak anlatılmasıdır.</li>
+                        <li><strong>Otobiyografi (Öz Yaşam Öyküsü):</strong> Kişinin kendi hayatını, başarılarını ve anılarını <strong>birinci kişi (ben)</strong> ağzıyla bizzat kendisinin yazmasıdır. Daha özneldir.</li>
+                    </ul>` },
+                    { title: "8. Sıfatlar (Önad) ve Zamirler (Adıl)", icon: "📝", content: `İsimlerle doğrudan ilişkili kelime türleridir:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Sıfatlar:</strong> Mutlaka bir ismin önüne gelerek onu renk, durum, biçim (Niteleme) veya işaret, sayı, soru (Belirtme) yönünden tanımlar. Örnek: <strong>Güzel</strong> araba, <strong>Şu</strong> adam, <strong>Üç</strong> elma.</li>
+                        <li><strong>Zamirler:</strong> İsmin yerini geçici olarak tutan sözcüklerdir. İsmin aldığı tüm çekim eklerini alabilirler. Örnek: <strong>Ben</strong> geldim, <strong>Şunu</strong> uzatır mısın?</li>
+                    </ul>` }
+                ],
+                questions: [
+                    { question: "İki veya daha fazla ses benzerliğine dayanan kafiye (uyak) türü aşağıdakilerden hangisidir?", options: [{text: "Yarım Kafiye", isCorrect: false}, {text: "Tam Kafiye", isCorrect: true}, {text: "Zengin Kafiye", isCorrect: false}, {text: "Tunç Kafiye", isCorrect: false}], hint: "İki ses benzerliğidir.", explanation: "Tek ses benzerliği yarım, iki ses benzerliği tam, üç ve daha fazlası zengin kafiyedir." },
+                    { question: "Aşağıdaki edebi sanatlardan hangisi 'insan dışındaki varlıklara insan özelliği kazandırma' sanatıdır?", options: [{text: "Teşhis (Kişileştirme)", isCorrect: true}, {text: "Mübalağa (Abartma)", isCorrect: false}, {text: "Teşbih (Benzetme)", isCorrect: false}, {text: "İntak (Konuşturma)", isCorrect: false}], hint: "Şahıs (kişi) kelimesinden türemiştir.", explanation: "Teşhis, şahıs kelimesinden gelir ve insan dışı varlıkların insan gibi düşünülmesi veya davranması sanatıdır." },
+                    { question: "Evrensel mesajlar içeren, tekerleme ile başlayan ve yer-zaman belirsizliği olan edebi tür nedir?", options: [{text: "Destan", isCorrect: false}, {text: "Fabl", isCorrect: false}, {text: "Roman", isCorrect: false}, {text: "Masal", isCorrect: true}], hint: "Bir varmış bir yokmuş...", explanation: "Masallar olağanüstü ögeler taşır, tekerleme ile başlar ve iyi-kötü çatışmasında hep iyiler kazanır." },
+                    { question: "İlk yerli romanımız olan 'Taaşşuk-ı Talat ve Fitnat' adlı eserin yazarı kimdir?", options: [{text: "Namık Kemal", isCorrect: false}, {text: "Şemsettin Sami", isCorrect: true}, {text: "Halit Ziya Uşaklıgil", isCorrect: false}, {text: "Ömer Seyfettin", isCorrect: false}], hint: "Türk edebiyatının ilk yerli romanını yazan Tanzimat dönemi aydınıdır.", explanation: "İlk yerli romanımız Şemsettin Sami'nin yazdığı Taaşşuk-ı Talat ve Fitnat'tır. Namık Kemal ilk edebi romanı (İntibah) yazmıştır." },
+                    { question: "Geleneksel Türk tiyatrosu türlerinden olan Karagöz oyununda aydın, okumuş ve yarı aydın kesimi temsil eden karakter hangisidir?", options: [{text: "Karagöz", isCorrect: false}, {text: "Hacivat", isCorrect: true}, {text: "Zenne", isCorrect: false}, {text: "Çelebi", isCorrect: false}], hint: "Karagöz'ün tam zıttı özelliklere sahip olan, bilgiçlik taslayan kişidir.", explanation: "Karagöz halkı temsil ederken, Hacivat okumuş, eğitimli kesimi temsil eder." },
+                    { question: "Kahramanları genellikle hayvanlar veya bitkiler olan, ders verme amacı güden şiir şeklindeki kısa hikayelere ne ad verilir?", options: [{text: "Fabl", isCorrect: true}, {text: "Masal", isCorrect: false}, {text: "Efsane", isCorrect: false}, {text: "Destan", isCorrect: false}], hint: "La Fontaine bu türün en ünlü yazarıdır.", explanation: "Fabl, insan dışı canlılara insani özellikler (intak ve teşhis) verilerek ders çıkarılması hedeflenen kısa ve genellikle manzum öykülerdir." },
+                    { question: "Bir kişinin kendi hayat hikayesini kendisinin kaleme aldığı eser türüne ne denir?", options: [{text: "Biyografi", isCorrect: false}, {text: "Otobiyografi", isCorrect: true}, {text: "Monografi", isCorrect: false}, {text: "Anı (Hatırat)", isCorrect: false}], hint: "Oto ön eki 'kendi, kendisi' anlamına gelir.", explanation: "Biyografi başkasının hayatının anlatılmasıdır, otobiyografi ise kişinin kendi öz yaşam öyküsünü yazmasıdır." },
+                    { question: "Aşağıdaki cümlelerin hangisinde bir 'Zamir' (Adıl) kullanılmıştır?", options: [{text: "Güzel günler bizi bekliyor.", isCorrect: true}, {text: "Mavi gökyüzü içimi açtı.", isCorrect: false}, {text: "Hızlı koşan çocuk yoruldu.", isCorrect: false}, {text: "Soğuk hava herkesi üşüttü.", isCorrect: false}], hint: "İsmin yerini tutan bir kelime (ben, sen, o, biz, siz, onlar) arayın.", explanation: "'bizi' kelimesi kişi zamiridir. Diğer şıklardaki altı çizili olabilecek sözcükler (güzel, mavi, hızlı, soğuk) sıfattır." },
+                    { question: "Roman ve hikaye arasındaki en temel fark aşağıdakilerden hangisidir?", options: [{text: "Hikayenin tamamen gerçek dışı olması", isCorrect: false}, {text: "Romanın kişi kadrosunun geniş, olayların ayrıntılı olması", isCorrect: true}, {text: "Hikayenin sadece manzum (şiir) şeklinde yazılması", isCorrect: false}, {text: "Romanın zaman ve mekandan bağımsız olması", isCorrect: false}], hint: "Biri kısa metrajlı film gibiyken diğeri uzun ve detaylı bir dizidir.", explanation: "Roman, hikayeye (öyküye) göre çok daha kapsamlıdır; mekan ve zaman çeşitliliği fazladır, kişi kadrosu daha geniştir." },
+                    { question: "İsimleri nitelik veya nicelik yönünden belirten sözcüklere 'Sıfat' denir. Buna göre 'Yuvarlak masa' tamlamasında 'yuvarlak' sözcüğü hangi tür sıfattır?", options: [{text: "İşaret Sıfatı", isCorrect: false}, {text: "Belgisiz Sıfat", isCorrect: false}, {text: "Niteleme Sıfatı", isCorrect: true}, {text: "Sayı Sıfatı", isCorrect: false}], hint: "İsme sorulan 'Nasıl?' sorusunun cevabıdır.", explanation: "İsmin rengini, durumunu veya biçimini bildiren (Nasıl masa? -> Yuvarlak masa) sıfatlara niteleme sıfatı denir." }
+                ]
+            },
+            tarih: {
+                studyCards: [
+                    { title: "1. Tarih ve Zaman Bilinci", icon: "⏳", content: `Tarih biliminin en temel özellikleri şunlardır:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li>Geçmişte yaşamış insan topluluklarının siyasi, sosyal ve ekonomik faaliyetlerini inceler.</li>
+                        <li>Olaylar <strong>Yer ve Zaman</strong> gösterilerek incelenir. Bu tarihin olmazsa olmazıdır.</li>
+                        <li>Olaylar arasında <strong>Sebep-Sonuç</strong> ilişkisi kurar.</li>
+                        <li>Mutlaka <strong>belgelere (kaynaklara)</strong> dayanmalıdır ve <strong>Objektif (Tarafsız)</strong> olmalıdır. Deney ve gözlem yapılamaz!</li>
+                    </ul>` },
+                    { title: "2. Türklerde Takvim Sistemleri", icon: "🗓️", content: `Türklerin tarihsel süreçte kullandığı temel takvimler:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>12 Hayvanlı Türk Takvimi:</strong> İslamiyet öncesi kullanılmıştır. Güneş yılı esaslıdır, her yıla bir hayvan adı verilir.</li>
+                        <li><strong>Hicri Takvim:</strong> İslamiyet'le birlikte kullanılmıştır. <strong>Ay yılı (354 gün)</strong> esaslıdır. Başlangıcı Hicret'tir (622).</li>
+                        <li><strong>Celali Takvim:</strong> Büyük Selçuklu'da Ömer Hayyam tarafından Melikşah için Güneş yılı esasına göre hazırlanmıştır.</li>
+                        <li>Rumi (Osmanlı-Mali işler) ve Miladi (Cumhuriyet dönemi-Günümüz) takvimler de Güneş yılı esaslıdır.</li>
+                    </ul>` },
+                    { title: "3. İnsanlığın İlk Dönemleri ve Tarih Öncesi", icon: "🏺", content: `Tarih öncesi devirler, yazının bulunmasından önceki karanlık çağlardır:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Taş ve Maden Çağları:</strong> Kullanılan aletin cinsine göre isimlendirilmiştir. Paleolitik (Eski Taş), Neolitik (Yeni Taş/Tarım devrimi) ve Maden devirleri (Bakır, Tunç, Demir).</li>
+                        <li><strong>Göbeklitepe:</strong> Şanlıurfa'da bulunur. İnsanlık tarihinin bilinen <strong>en eski tapınak ve ibadet merkezidir</strong> (Sıfır noktası).</li>
+                        <li>Tarihi devirler, <strong>Sümerlerin MÖ 3200'de çivi yazısını bulmasıyla</strong> (İlk Çağ) başlar.</li>
+                    </ul>` },
+                    { title: "4. İlk Çağ Medeniyetleri (Mezopotamya)", icon: "🏛️", content: `Dicle ve Fırat nehirleri arasındaki verimli topraklarda kurulan medeniyetler:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Sümerler:</strong> Şehir devletleri (Site) halinde yaşadılar. <strong>Ziggurat</strong> adlı tapınakları yaptılar. Ay yılı takvimini ve en önemlisi <strong>Çivi Yazısını</strong> buldular.</li>
+                        <li><strong>Asurlar:</strong> Güçlü ve savaşçı bir imparatorluktur. <strong>Karum</strong> adı verilen pazarlar kurarak Anadolu'ya çivi yazısını taşıdılar ve Anadolu'da tarihi devirleri başlattılar.</li>
+                    </ul>` },
+                    { title: "5. Orta Çağ'da Avrupa", icon: "🏰", content: `Kavimler Göçü (375) ile başlayıp İstanbul'un Fethi'ne (1453) kadar süren dönem:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Feodalite (Derebeylik):</strong> Merkezi krallıkların zayıfladığı, toprağa dayalı zenginlik ve sınıf ayrımı olan yönetim biçimidir. Şatolar ve surlarla korunurlar.</li>
+                        <li><strong>Skolastik Düşünce:</strong> Kilisenin (Papalığın) her şeye hakim olduğu, deney, gözlem, sorgulama ve bilimsel gelişmenin kesinlikle <strong>yasaklandığı</strong> dogmatik düşünce sistemidir.</li>
+                    </ul>` },
+                    { title: "6. İlk Türk Devletleri ve Yönetim (Kut)", icon: "🐎", content: `İslamiyet öncesi Orta Asya'da kurulan devletlerimiz:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Asya Hun Devleti:</strong> Bilinen ilk teşkilatlı Türk devletidir. Mete Han, günümüz ordularının temeli olan <strong>'Onlu Sistemi'</strong> kurmuştur.</li>
+                        <li><strong>Göktürkler:</strong> 'Türk' adıyla kurulan ilk devletimizdir (Orhun Abideleri).</li>
+                        <li><strong>Kut İnancı:</strong> Devleti yönetme yetkisinin <strong>Gök Tengri (Tanrı) tarafından</strong> hükümdara ve kan bağıyla ailesine verildiği inancıdır. Bu inanç sürekli taht kavgalarına (veraset) yol açmıştır.</li>
+                    </ul>` },
+                    { title: "7. Kavimler Göçü (375)", icon: "🗺️", content: `Balamir önderliğindeki Hunların Karadeniz'in kuzeyinden Batı'ya (Avrupa'ya) ilerlemesi sonucu oluşan devasa göç dalgasıdır. Sonuçları:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li>Dehşete düşen barbar kavimler (Ostrogotlar, Vizigotlar vb.) Avrupa'nın içlerine kaçarak bugünkü Avrupa milletlerinin (Alman, İngiliz vb.) temelini attılar.</li>
+                        <li>Roma İmparatorluğu ikiye ayrıldı (395) ve Batı Roma yıkıldı.</li>
+                        <li>İlk Çağ kapanıp, Orta Çağ başladı. Avrupa'da Feodalite rejimi ortaya çıktı.</li>
+                    </ul>` },
+                    { title: "8. İslam Medeniyetinin Doğuşu", icon: "🌙", content: `Hz. Muhammed (S.a.v) ile başlayan İslam tarihi dönemleri:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Dört Halife Dönemi:</strong> Halifeler seçimle başa geldiği için bu döneme 'İslam Cumhuriyeti' denir.</li>
+                        <li><strong>Emeviler Dönemi:</strong> Fetihler çok hızlanmıştır. Ancak <strong>'Mevali Politikası'</strong> (Arap ırkçılığı) izleyerek Arap olmayan Müslümanları dışlamışlardır.</li>
+                        <li><strong>Abbasiler Dönemi:</strong> Emevilerin aksine 'Ümmetçi' ve hoşgörülü bir politika izlediler. Bilim ve kültürde Altın Çağ yaşandı (Beyt'ül Hikme kütüphaneleri).</li>
+                    </ul>` }
+                ],
+                questions: [
+                    { question: "Tarih biliminin özelliklerinden hangisi onun fen bilimlerinden farklı olduğunu kanıtlar?", options: [{text: "Olayları belgelere dayandırması", isCorrect: false}, {text: "Sebep-sonuç ilişkisi kurması", isCorrect: false}, {text: "Deney ve gözlem metodunun kullanılamaması", isCorrect: true}, {text: "Objektif (tarafsız) olması", isCorrect: false}], hint: "Tarih geçmişte olup bitmiştir, dolayısıyla laboratuvara sokulamaz.", explanation: "Tarihi olaylar geçmişte yaşanıp bittiği için tekrarı mümkün değildir, bu yüzden tarih biliminde deney ve gözlem metodu kullanılamaz." },
+                    { question: "Tarih devirlerinin başlamasını sağlayan en önemli icat aşağıdakilerden hangisidir?", options: [{text: "Tekerleğin icadı", isCorrect: false}, {text: "Yazının icadı", isCorrect: true}, {text: "Ateşin bulunması", isCorrect: false}, {text: "Demirin işlenmesi", isCorrect: false}], hint: "Sümerler tarafından MÖ 3200'de bulunmuştur.", explanation: "Yazının Sümerler tarafından icat edilmesiyle olaylar kaydedilmeye başlanmış ve Tarih öncesi devirler bitip Tarihi çağlar (İlk Çağ) başlamıştır." },
+                    { question: "Türklerin kullandığı takvimlerden hangisi Ay yılı esasına göre düzenlenmiştir?", options: [{text: "12 Hayvanlı Türk Takvimi", isCorrect: false}, {text: "Celali Takvimi", isCorrect: false}, {text: "Hicri Takvim", isCorrect: true}, {text: "Miladi Takvim", isCorrect: false}], hint: "İslamiyet'in kabulünden sonra kullanılmaya başlanan takvimdir.", explanation: "Hicri takvim Ay yılı esasına dayanır, 1 yıl 354 gündür. Diğer takvimler Güneş yılı esaslıdır (365 gün)." },
+                    { question: "Anadolu'ya yazıyı getirerek Anadolu'da Tarihi Çağları başlatan ve 'Karum' denilen ticaret merkezleri kuran Mezopotamya uygarlığı hangisidir?", options: [{text: "Sümerler", isCorrect: false}, {text: "Akadlar", isCorrect: false}, {text: "Asurlar", isCorrect: true}, {text: "Babiller", isCorrect: false}], hint: "Kayseri Kültepe'de ticaret kolonileri kurmuşlardır.", explanation: "Asurlar ticaretle uğraşmış ve ticaret yapmak için geldikleri Anadolu'ya Sümerlerden öğrendikleri çivi yazısını getirmişlerdir." },
+                    { question: "İlk Türk devletlerinde devlet işlerinin görüşülüp karara bağlandığı meclise ne ad verilirdi?", options: [{text: "Pankuş", isCorrect: false}, {text: "Kurultay (Toy)", isCorrect: true}, {text: "Divan-ı Hümayun", isCorrect: false}, {text: "Agora", isCorrect: false}], hint: "Kağan, hatun ve boy beylerinin katıldığı karar meclisidir.", explanation: "Kurultay (veya Toy / Kengeş), İslamiyet öncesi Türk devletlerinde siyasi, kültürel, hukuki işlerin görüşüldüğü devlet meclisidir." },
+                    { question: "Kavimler Göçü'nün sonuçları arasında aşağıdakilerden hangisi yer almaz?", options: [{text: "Roma İmparatorluğu ikiye ayrıldı", isCorrect: false}, {text: "Avrupa'da Feodalite (Derebeylik) rejimi ortaya çıktı", isCorrect: false}, {text: "İlk Çağ sona erip, Orta Çağ başladı", isCorrect: false}, {text: "Haçlı Seferleri başladı", isCorrect: true}], hint: "Bu sonuç daha çok ilerleyen yüzyıllarda İslam dünyasına karşı düzenlenen bir Hristiyan saldırısıdır.", explanation: "Haçlı Seferleri 11. yüzyılda başlamıştır, Kavimler Göçü'nün (375) doğrudan bir sonucu değildir." },
+                    { question: "Orta Çağ Avrupa'sında kilisenin deney ve gözleme karşı çıktığı, sorgulamanın yasak olduğu baskıcı düşünce sistemine ne ad verilir?", options: [{text: "Skolastik düşünce", isCorrect: true}, {text: "Hümanizm", isCorrect: false}, {text: "Rönesans", isCorrect: false}, {text: "Aydınlanma", isCorrect: false}], hint: "Dogmatik kelimesiyle eş anlamlı olarak kilise felsefesi için kullanılır.", explanation: "Skolastik düşünce, Orta Çağ'da kilisenin bilime ve özgür düşünceye karşı uyguladığı bağnaz felsefi sistemdir." },
+                    { question: "Orduda 'Onlu Sistem'i kurarak günümüz modern ordularının temelini atan Asya Hun Devleti hükümdarı kimdir?", options: [{text: "Teoman", isCorrect: false}, {text: "Bumin Kağan", isCorrect: false}, {text: "Mete Han", isCorrect: true}, {text: "Attila", isCorrect: false}], hint: "MÖ 209'da tahta çıkışı, Türk Kara Kuvvetlerinin kuruluşu sayılır.", explanation: "Mete Han (Oğuz Kağan), Asya Hun devletinin en parlak dönemini yaşatmış ve onlu ordu sistemini kurmuştur." },
+                    { question: "Emeviler döneminde Arap olmayan Müslümanlara ikinci sınıf vatandaş muamelesi yapılması politikasına ne ad verilir?", options: [{text: "İskan", isCorrect: false}, {text: "İstimalet", isCorrect: false}, {text: "Gaza ve Cihat", isCorrect: false}, {text: "Mevali Politikası", isCorrect: true}], hint: "Kelime anlamı 'azatlı köle' demektir.", explanation: "Emeviler, Arap milliyetçiliği yaparak Arap olmayan Müslümanlara (Türkler, Farslar vb.) 'Mevali' adını vermişlerdir." },
+                    { question: "Aşağıdaki Türk devletlerinden hangisi göçebe bozkır kültürünü bırakıp yerleşik hayata geçen İLK Türk devletidir?", options: [{text: "Uygurlar", isCorrect: true}, {text: "Göktürkler", isCorrect: false}, {text: "Kutluklar", isCorrect: false}, {text: "Hazarlar", isCorrect: false}], hint: "Maniheizm dinini benimsedikleri için tapınak yapmak üzere ev yapmışlardır.", explanation: "Uygurlar Bögü Kağan döneminde Maniheizm'i kabul etmiş, et yemek ve savaşmak yasak olduğu için tarıma yönelip yerleşik hayata geçen ilk Türk devleti olmuşlardır." }
+                ]
+            },
+            cografya: {
+                studyCards: [
+                    { title: "1. Doğa ve İnsan Etkileşimi", icon: "🌱", content: `Doğal çevre koşulları insanın yeryüzündeki yaşantısını doğrudan şekillendirir:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>İnsanın Doğaya Bağımlılığı:</strong> İklimi soğuk olan yerlerde kalın giyinilmesi, dik yamaçlarda tarım yapılamaması veya evlerin yapı malzemesinin ahşap/kerpiç olması.</li>
+                        <li><strong>İnsanın Doğaya Müdahalesi:</strong> Denizin doldurulup havalimanı yapılması (Ordu-Giresun), dağların delinip tüneller (Ovit) veya barajlar inşa edilmesi.</li>
+                        <li>Coğrafya, bu iki taraflı etkileşimi neden-sonuç ilkesiyle inceler.</li>
+                    </ul>` },
+                    { title: "2. Coğrafyanın Alt Dalları", icon: "🗺️", content: `Coğrafya bilimi temel olarak Fiziki (Doğal) ve Beşeri (İnsani) olarak ikiye ayrılır:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Jeomorfoloji (Yer Şekilleri Bilimi):</strong> Dağların, ovaların, platoların oluşumunu inceler.</li>
+                        <li><strong>Klimatoloji (İklim Bilimi):</strong> Sıcaklık, rüzgar, yağış gibi uzun süreli hava olaylarını inceler.</li>
+                        <li><strong>Hidrografya (Sular Coğrafyası):</strong> Okyanus, deniz, göl, akarsu ve yeraltı sularını inceler.</li>
+                        <li><strong>Beşeri Coğrafya:</strong> Nüfus, yerleşme, tarım, sanayi, turizm ve ulaşım gibi insan faaliyetlerini inceler.</li>
+                    </ul>` },
+                    { title: "3. Dünyanın Şekli (Geoit) ve Sonuçları", icon: "🌎", content: `Dünya, tam bir küre değil; kutuplardan basık, Ekvator'dan şişkin kendine has bir şekle sahiptir. Buna <strong>Geoit</strong> denir. Sonuçları:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li>Ekvator'un çevre uzunluğu, Kutupların çevre uzunluğundan daha fazladır.</li>
+                        <li>Ekvator yarıçapı, kutuplar yarıçapından büyüktür.</li>
+                        <li>Kutuplar, Dünya'nın merkezine (çekirdeğe) daha yakın olduğu için <strong>Yerçekimi kuvveti Ekvator'dan Kutuplara gidildikçe artar.</strong></li>
+                    </ul>` },
+                    { title: "4. Dünyanın Günlük ve Yıllık Hareketi", icon: "🔄", content: `Dünyanın Güneş etrafında ve kendi ekseni etrafında dönmesinin çok net sonuçları vardır:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Günlük Hareket (Eksen Hareketi):</strong> Gece ve gündüz <strong>ardalanır (birbirini izler)</strong>. Doğuda Güneş erken doğar, yerel saat farkları oluşur. Günlük sıcaklık farkları ve meltem rüzgarları meydana gelir.</li>
+                        <li><strong>Yıllık Hareket (Eksen Eğikliği - 23°27'):</strong> Mevsimler oluşur. Yıl içinde gece-gündüz süreleri uzayıp kısalır. Güneş ışınlarının geliş açısı yıl boyunca değişir.</li>
+                    </ul>` },
+                    { title: "5. Harita Bilgisi ve Ölçek", icon: "📏", content: `Yeryüzünün kuşbakışı görüntüsünün belli bir oranda küçültülerek düzleme aktarılmasına Harita denir. Ölçek (küçültme oranı) en önemli unsurdur:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Büyük Ölçekli Haritalar (Örn: 1/10.000):</strong> Küçültme oranı azdır. Daha dar bir alanı gösterir ancak <strong>ayrıntıyı çok fazla</strong> verir. Bozulma oranı düşüktür.</li>
+                        <li><strong>Küçük Ölçekli Haritalar (Örn: 1/1.000.000):</strong> Küçültme oranı çok fazladır (Dünya haritası gibi). Geniş alanları gösterir fakat <strong>ayrıntı gösterme gücü düşüktür</strong>.</li>
+                    </ul>` },
+                    { title: "6. İzohipsler (Eş Yükselti Eğrileri)", icon: "⛰️", content: `Deniz seviyesinden aynı yükseklikte bulunan noktaların birleştirilmesiyle çizilen kapalı eğrilerdir:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li>İzohipslerin sıfır (0) metreyi gösteren çizgisine <strong>Kıyı Çizgisi</strong> denir.</li>
+                        <li>Eğrilerin birbirine <strong>çok yaklaştığı (sıklaştığı)</strong> yerlerde eğim çok fazladır (Uçurum, dik yamaç). Bu bölgelerde akarsular çok hızlı akar ve aşındırma gücü yüksektir.</li>
+                        <li>Eğrilerin birbirinden <strong>uzaklaştığı (seyrekleştiği)</strong> yerlerde ise eğim azdır (Ova, düzlük).</li>
+                    </ul>` },
+                    { title: "7. İklim (Klimatoloji) ve Hava Durumu", icon: "☀️", content: `İklim ve Hava Durumu sıkça karıştırılır, ancak süreleri ve kapsamları farklıdır:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>İklim:</strong> Geniş bir bölgede, uzun yıllar (en az 30-40 yıl) boyunca değişmeyen ortalama hava olaylarıdır. Örn: "Karadeniz her mevsim yağışlıdır." İklim bilimi: Klimatoloji.</li>
+                        <li><strong>Hava Durumu:</strong> Dar bir alanda, çok kısa süreli (saatlik/günlük) değişken hava olaylarıdır. Örn: "Bugün Ankara'da öğleden sonra sağanak yağış bekleniyor." Bilim: Meteoroloji.</li>
+                    </ul>` },
+                    { title: "8. Sıcaklık Dağılışını Etkileyen Faktörler", icon: "🌡️", content: `Dünya üzerinde sıcaklık her yerde aynı değildir, buna etki eden faktörler:
+                    <ul class="list-disc pl-5 mt-1 space-y-1 text-xs text-slate-600">
+                        <li><strong>Enlem Etkisi:</strong> Güneş ışınları Ekvator'a dik açıyla gelir. Bu yüzden Ekvator'dan kutuplara doğru gidildikçe sıcaklık düzenli olarak azalır.</li>
+                        <li><strong>Yükselti:</strong> Troposfer katmanında yerden yükseldikçe sıcaklık <strong>her 200 metrede 1°C azalır.</strong> (Dağların zirvesinin soğuk olmasının nedeni).</li>
+                        <li><strong>Nem (Denizellik):</strong> Nem oranı sıcaklığın aşırı ısınmasını veya aşırı soğumasını engeller (Dengeleyicidir). Bu yüzden çöller gece dondurucu soğuk olur.</li>
+                    </ul>` }
+                ],
+                questions: [
+                    { question: "Yer şekillerinin oluşumunu ve gelişimini inceleyen fiziki coğrafya alt dalı aşağıdakilerden hangisidir?", options: [{text: "Klimatoloji", isCorrect: false}, {text: "Jeomorfoloji", isCorrect: true}, {text: "Biyocoğrafya", isCorrect: false}, {text: "Hidrografya", isCorrect: false}], hint: "Jeo = Yer, Morfo = Şekil.", explanation: "Jeomorfoloji, dağ, ova, plato gibi yer şekillerinin oluşumunu inceleyen yer bilimi alt dalıdır." },
+                    { question: "Aşağıdakilerden hangisi Dünya'nın sadece küresel (geoit) şeklinin bir sonucudur?", options: [{text: "Mevsimlerin oluşması", isCorrect: false}, {text: "Gece ile gündüzün birbirini takip etmesi", isCorrect: false}, {text: "Ekvator'dan kutuplara gidildikçe yerçekiminin artması", isCorrect: true}, {text: "Muson rüzgarlarının oluşması", isCorrect: false}], hint: "Kutupların merkeze daha yakın olmasından kaynaklanır.", explanation: "Geoit şekil nedeniyle kutuplar yerin merkezine ekvatordan daha yakındır, bu da kutuplarda yerçekiminin daha fazla olmasını sağlar." },
+                    { question: "Aşağıdakilerden hangisi Dünya'nın kendi ekseni etrafında dönmesinin (Günlük Hareket) sonuçlarından biri değildir?", options: [{text: "Yerel saat farklarının oluşması", isCorrect: false}, {text: "Gece ve gündüzün ardalanması", isCorrect: false}, {text: "Dinamik basınç kuşaklarının oluşması", isCorrect: false}, {text: "Yıllık sıcaklık farklarının oluşması", isCorrect: true}], hint: "Bir şey 'yıllık' olarak oluşuyorsa o Dünya'nın Güneş etrafında dönmesiyle ilgilidir.", explanation: "Yıllık sıcaklık farklarının oluşması, Dünya'nın Güneş etrafında dönmesi (yıllık hareket) ve eksen eğikliğinin sonucudur." },
+                    { question: "Bir çizimin harita özelliği taşıyabilmesi için öncelikle bulunması gereken üç temel şart nedir?", options: [{text: "Kuşbakışı görünüm, Ölçek, Düzleme aktarılma", isCorrect: true}, {text: "Lejant, Profil, Renklendirme", isCorrect: false}, {text: "Kroki planı, Projeksiyon, Yükselti", isCorrect: false}, {text: "Enlem boylam, İzohips, Ölçek", isCorrect: false}], hint: "Tepeden bakılmalı, belli oranda küçültülmeli ve bir kağıda/düzleme çizilmelidir.", explanation: "Harita olabilmesi için; kuşbakışı bakılması, belli bir küçültme oranının (ölçek) olması ve bir düzleme aktarılması şarttır. Ölçeği olmayan kaba taslak çizimlere kroki denir." },
+                    { question: "İzohips (Eş yükselti eğrisi) haritalarında, eğrilerin birbirine çok yaklaştığı (sıklaştığı) bir yer için aşağıdakilerden hangisi söylenebilir?", options: [{text: "Eğim fazladır (dik bir yamaçtır).", isCorrect: true}, {text: "Bölge deniz seviyesindedir.", isCorrect: false}, {text: "Yerleşim için en uygun düzlüklerdir.", isCorrect: false}, {text: "Akarsu çok yavaş akmaktadır.", isCorrect: false}], hint: "Çizgilerin sıklaşması yükseltinin kısa mesafede hızla arttığını gösterir.", explanation: "İzohipslerin sıklaştığı yerlerde eğim fazladır (yamaç/uçurum). Eğimli yerlerde akarsular çok hızlı ve aşındırarak akar." },
+                    { question: "Güneş ışınlarının yere düşme açısı ekvatordan kutuplara gidildikçe daralır. Bu durumun sonucunda aşağıdakilerden hangisi gerçekleşir?", options: [{text: "Kutuplara doğru gidildikçe sıcaklık ortalaması düşer (Enlem etkisi)", isCorrect: true}, {text: "Dağların yüksek kesimlerinde karlar erir", isCorrect: false}, {text: "Ekvator bölgesinde yerçekimi artar", isCorrect: false}, {text: "Gece ve gündüz süreleri eşitlenir", isCorrect: false}], hint: "Ekvatorun sıcak, kutupların soğuk olmasının temel sebebidir.", explanation: "Enlem faktörü gereği Güneş ışınları ekvatora dik gelirken kutuplara doğru eğik açıyla gelir, bu yüzden ekvatordan kutuplara gidildikçe sıcaklık düşer." },
+                    { question: "Troposfer katmanında yerden yükseldikçe her 200 metrede sıcaklık 1°C azalmaktadır. Buna göre deniz seviyesinden yükseltisi 2000 metre olan bir dağın zirvesi, deniz seviyesine göre kaç derece daha soğuktur?", options: [{text: "5°C", isCorrect: false}, {text: "10°C", isCorrect: true}, {text: "15°C", isCorrect: false}, {text: "20°C", isCorrect: false}], hint: "2000'i 200'e bölün.", explanation: "Her 200 metrede 1 derece azaldığı için, 2000 metre yükselindiğinde 2000 / 200 = 10 derece sıcaklık farkı oluşur." },
+                    { question: "'Geniş alanlarda, uzun yıllar boyunca devam eden ve değişmeyen atmosfer olaylarının ortalamasıdır.' Bu tanım aşağıdakilerden hangisine aittir?", options: [{text: "Hava Durumu", isCorrect: false}, {text: "İklim", isCorrect: true}, {text: "Atmosfer", isCorrect: false}, {text: "Meteoroloji", isCorrect: false}], hint: "Hava durumu gibi günlük değişmez, yılların ortalamasıdır.", explanation: "İklim, bir bölgede uzun yıllar boyunca gözlemlenen hava olaylarının ortalamasıdır (ör. Akdeniz iklimi yazları sıcak ve kuraktır). Hava durumu ise günlük değişkenliklerdir." },
+                    { question: "Aşağıdakilerden hangisi insanın doğal çevreye yaptığı olumsuz müdahalelerden biri değildir?", options: [{text: "Bataklıkların kurutulması ve ormanların yok edilmesi", isCorrect: false}, {text: "Fosil yakıt kullanımına bağlı hava kirliliğinin artması", isCorrect: false}, {text: "Milli parkların oluşturulup doğanın koruma altına alınması", isCorrect: true}, {text: "Sanayi atıklarının sulara karışması", isCorrect: false}], hint: "Doğayı korumaya yönelik olumlu bir harekettir.", explanation: "Milli parkların ilan edilmesi, yaban hayatını ve doğayı korumaya yönelik insanın yaptığı olumlu (pozitif) bir faaliyet örneğidir." },
+                    { question: "1/100.000 ölçekli bir harita ile 1/1.000.000 ölçekli bir harita karşılaştırıldığında aşağıdakilerden hangisi yanlıştır?", options: [{text: "1/100.000 büyük ölçekli bir haritadır", isCorrect: false}, {text: "1/100.000 ölçekli haritada ayrıntı daha fazladır", isCorrect: false}, {text: "1/1.000.000 ölçekli harita daha geniş alanları gösterir", isCorrect: false}, {text: "1/1.000.000 ölçekli haritada ayrıntı gösterme gücü daha fazladır", isCorrect: true}], hint: "Payda büyüdükçe küçültme oranı artar, harita küçülür ve ayrıntı kaybolur.", explanation: "1/1.000.000 küçük ölçeklidir (küçültme oranı fazladır), bu yüzden ayrıntı gösterme gücü düşüktür. Tam tersine 1/100.000 ölçekte ayrıntı daha fazladır." }
+                ]
+            }
+        };
+
+        // App States
+        let currentSubject = 'matematik';
+        let currentTab = 'study';
+        let currentQuestionIdx = 0;
+        let answersState = [];
+        let lockState = [];
+        let shuffleEnabled = false;
+        let currentShuffledQuestions = null;
+        let timerInterval = null;
+        let timerSeconds = 15 * 60;
+
+        // Dark Mode
+        let darkMode = localStorage.getItem('darkMode') === 'true';
+        function initDarkMode() {
+            if (darkMode) document.body.classList.add('dark');
+            updateDarkModeIcon();
+        }
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', darkMode);
+            updateDarkModeIcon();
+        }
+        function updateDarkModeIcon() {
+            const btn = document.getElementById('dark-mode-btn');
+            if (btn) btn.innerText = darkMode ? '☀️' : '🌙';
+        }
+
+        // Timer
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerSeconds = 15 * 60;
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                if (timerSeconds <= 0) { clearInterval(timerInterval); autoFinishQuiz(); }
+            }, 1000);
+        }
+        function stopTimer() { clearInterval(timerInterval); }
+        function updateTimerDisplay() {
+            const m = Math.floor(timerSeconds / 60);
+            const s = timerSeconds % 60;
+            const el = document.getElementById('quiz-timer-display');
+            if (el) {
+                el.innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                if (timerSeconds <= 60) el.classList.add('timer-warn');
+                else el.classList.remove('timer-warn');
+            }
+        }
+        function autoFinishQuiz() {
+            const data = getActiveQuestions();
+            for (let i = 0; i < data.length; i++) { if (!lockState[i]) lockState[i] = true; }
+            currentQuestionIdx = data.length;
+            renderQuiz();
+        }
+
+        // Shuffle
+        function shuffleArray(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+        function getActiveQuestions() {
+            return currentShuffledQuestions || subjectData[currentSubject].questions;
+        }
+
+        // Score persistence
+        function saveScore(subject, correct, total) {
+            const scores = JSON.parse(localStorage.getItem('examScores') || '{}');
+            if (!scores[subject]) scores[subject] = { history: [], best: 0 };
+            scores[subject].history.push({ correct, total, date: new Date().toISOString() });
+            if (correct > scores[subject].best) scores[subject].best = correct;
+            localStorage.setItem('examScores', JSON.stringify(scores));
+        }
+        function renderDashboardStats() {
+            const container = document.getElementById('stats-container');
+            if (!container) return;
+            const scores = JSON.parse(localStorage.getItem('examScores') || '{}');
+            const subjects = ['matematik', 'fizik', 'kimya', 'biyoloji', 'edebiyat', 'tarih', 'cografya'];
+            const icons = { matematik: '📐', fizik: '⚡', kimya: '🧪', biyoloji: '🧬', edebiyat: '📖', tarih: '📜', cografya: '🌍' };
+            const names = { matematik: 'Matematik', fizik: 'Fizik', kimya: 'Kimya', biyoloji: 'Biyoloji', edebiyat: 'Edebiyat', tarih: 'Tarih', cografya: 'Coğrafya' };
+            container.innerHTML = '';
+            subjects.forEach(s => {
+                const d = scores[s];
+                const last = d && d.history.length > 0 ? d.history[d.history.length-1] : null;
+                const card = document.createElement('div');
+                card.className = 'bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-center anim-fade-up';
+                card.innerHTML = `<span class="text-2xl">${icons[s]}</span>
+                    <p class="text-xs font-bold text-slate-600 mt-1">${names[s]}</p>
+                    <p class="text-lg font-black text-slate-800">${last ? last.correct + '/' + last.total : '—'}</p>
+                    <p class="text-[10px] text-slate-400">En iyi: ${d ? d.best : '—'}</p>`;
+                container.appendChild(card);
+            });
+        }
+
+        // Search
+        function filterStudyCards() {
+            const query = document.getElementById('study-search').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('#study-cards-container > div');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        // Confetti
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            if (!canvas) return;
+            canvas.classList.remove('hidden');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const particles = [];
+            const colors = ['#6366f1','#ec4899','#14b8a6','#f59e0b','#ef4444','#8b5cf6'];
+            for (let i = 0; i < 150; i++) {
+                particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height - canvas.height,
+                    vx: (Math.random()-0.5)*4, vy: Math.random()*3+2,
+                    color: colors[Math.floor(Math.random()*colors.length)],
+                    size: Math.random()*6+3, rot: Math.random()*360, rs: (Math.random()-0.5)*10 });
+            }
+            let frame = 0;
+            function animate() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                particles.forEach(p => {
+                    p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rs;
+                    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+                    ctx.fillStyle = p.color; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+                    ctx.restore();
+                });
+                frame++;
+                if (frame < 180) requestAnimationFrame(animate);
+                else { ctx.clearRect(0,0,canvas.width,canvas.height); canvas.classList.add('hidden'); }
+            }
+            animate();
+        }
+
+        // Set colors based on subject
+        function applySubjectThemeColors(subj) {
+            const theme = subjectThemes[subj];
+            const headerBadge = document.getElementById('subject-icon-badge');
+
+            // Icon
+            headerBadge.innerText = theme.icon;
+
+            // Adjust button highlighting
+            const studyTabBtn = document.getElementById('workspace-study-tab');
+            const quizTabBtn = document.getElementById('workspace-quiz-tab');
+
+            if (currentTab === 'study') {
+                studyTabBtn.className = `flex-1 md:flex-none text-center px-6 py-2.5 rounded-xl font-bold text-xs transition duration-200 ${theme.buttonActive}`;
+                quizTabBtn.className = `flex-1 md:flex-none text-center px-6 py-2.5 rounded-xl font-bold text-xs transition duration-200 ${theme.buttonInactive}`;
+            } else {
+                quizTabBtn.className = `flex-1 md:flex-none text-center px-6 py-2.5 rounded-xl font-bold text-xs transition duration-200 ${theme.buttonActive}`;
+                studyTabBtn.className = `flex-1 md:flex-none text-center px-6 py-2.5 rounded-xl font-bold text-xs transition duration-200 ${theme.buttonInactive}`;
+            }
+        }
+
+        // Navigate back home
+        function goHome() {
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            document.getElementById('subject-workspace-view').classList.add('hidden');
+            stopTimer();
+            renderDashboardStats();
+            window.scrollTo(0, 0);
+        }
+
+        // Subject Select Event
+        function selectSubject(subj) {
+            currentSubject = subj;
+            currentTab = 'study'; // Reset to study page
+            currentQuestionIdx = 0;
+            currentShuffledQuestions = null;
+            stopTimer();
+
+            // Initialize dynamic states based on subject question count
+            const questionCount = subjectData[subj].questions.length;
+            answersState = Array(questionCount).fill(null);
+            lockState = Array(questionCount).fill(false);
+
+            // Show workpace, hide dashboard
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('subject-workspace-view').classList.remove('hidden');
+
+            // Apply themes
+            const theme = subjectThemes[subj];
+            document.getElementById('subject-title-text').innerText = theme.title;
+
+            // Re-draw workspace view
+            applySubjectThemeColors(subj);
+            renderStudyGuide();
+            renderQuiz();
+
+            window.scrollTo(0, 0);
+        }
+
+        // Toggle study / quiz tabs
+        function switchWorkspaceTab(tab) {
+            currentTab = tab;
+            applySubjectThemeColors(currentSubject);
+
+            const studyContent = document.getElementById('study-tab-content');
+            const quizContent = document.getElementById('quiz-tab-content');
+
+            if (tab === 'study') {
+                studyContent.classList.remove('hidden');
+                quizContent.classList.add('hidden');
+                renderStudyGuide();
+            } else {
+                studyContent.classList.add('hidden');
+                quizContent.classList.remove('hidden');
+                renderQuiz();
+            }
+        }
+
+        function startQuizAction() {
+            if (shuffleEnabled) {
+                currentShuffledQuestions = shuffleArray(subjectData[currentSubject].questions);
+            } else {
+                currentShuffledQuestions = null;
+            }
+            startTimer();
+            switchWorkspaceTab('quiz');
+        }
+
+        // Inject Study Guide Content
+        function renderStudyGuide() {
+            const container = document.getElementById('study-tab-content');
+            container.innerHTML = '';
+
+            const data = subjectData[currentSubject];
+            const theme = subjectThemes[currentSubject];
+
+            // Insert custom alert cards
+            const alertCard = document.createElement('div');
+            alertCard.className = `flex gap-3 p-5 rounded-2xl shadow-sm border ${theme.accentBg} ${theme.accentBorder}`;
+            alertCard.innerHTML = `
+                <span class="text-xl">💡</span>
+                <div>
+                    <h4 class="font-extrabold text-sm ${theme.textClass}">Sınav Taktikleri & Tüyolar</h4>
+                    <p class="text-xs text-slate-700 mt-1 leading-relaxed">
+                        Sınavın en kritik noktalarından, MEB müfredatına %100 uyumlu olarak derlenmiştir. Mutlaka önemli formülleri ve kalın yazılmış terimleri bir kenara not edin!
+                    </p>
+                </div>
+            `;
+            container.appendChild(alertCard);
+
+            // Injected notes
+            data.studyCards.forEach(card => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-3";
+                cardEl.innerHTML = `
+                    <div class="flex items-center gap-2 font-bold text-slate-800 border-b border-slate-100 pb-2">
+                        <span>${card.icon}</span>
+                        <h4>${card.title}</h4>
+                    </div>
+                    <div class="text-sm text-slate-600 leading-relaxed">${card.content}</div>
+                `;
+                container.appendChild(cardEl);
+            });
+
+            // Start Quiz Button in Study Tab Footer
+            const quizCTA = document.createElement('div');
+            quizCTA.className = "text-center py-4";
+            quizCTA.innerHTML = `
+                <div class="flex flex-col items-center gap-3">
+                    <label class="flex items-center gap-2 text-xs font-bold text-slate-600 cursor-pointer">
+                        <input type="checkbox" id="shuffle-toggle" onchange="shuffleEnabled = this.checked" ${shuffleEnabled ? 'checked' : ''} class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
+                        Soruları Karıştır
+                    </label>
+                    <button onclick="startQuizAction()" class="bg-slate-800 text-white font-extrabold px-6 py-3 rounded-2xl text-xs hover:bg-slate-950 transition shadow-lg">
+                        ✍️ Bilgilerini Test Et: 10 Soruluk Sınavı Başlat
+                    </button>
+                </div>
+            `;
+            container.appendChild(quizCTA);
+
+            // Trigger formulas rendering (Safely check if MathJax is loaded and has typesetPromise)
+            if (typeof MathJax !== 'undefined' && typeof MathJax.typesetPromise === 'function') {
+                MathJax.typesetPromise().catch(function (err) {
+                    console.log("MathJax typesetting failed: " + err.message);
+                });
+            }
+        }
+
+        // Render Quiz State and Questions
+        function renderQuiz() {
+            const data = getActiveQuestions();
+            const totalQuestions = data.length;
+            const theme = subjectThemes[currentSubject];
+
+            const resultsCard = document.getElementById('quiz-results-card');
+            const questionCard = document.getElementById('quiz-question-card');
+
+            // Handle results card toggle when reaching the end of the list
+            if (currentQuestionIdx >= totalQuestions) {
+                resultsCard.classList.remove('hidden');
+                questionCard.classList.add('hidden');
+                showQuizResults();
+                return;
+            } else {
+                resultsCard.classList.add('hidden');
+                questionCard.classList.remove('hidden');
+            }
+
+            const q = data[currentQuestionIdx];
+
+            // Progression elements (calculated dynamically based on total questions)
+            const progPercent = ((currentQuestionIdx + 1) / totalQuestions) * 100;
+            document.getElementById('quiz-progress-text').innerText = `Soru ${currentQuestionIdx + 1} / ${totalQuestions}`;
+            document.getElementById('quiz-progress-fill').style.width = `${progPercent}%`;
+            document.getElementById('quiz-progress-fill').className = `h-2 rounded-full transition-all duration-300 ${theme.buttonActive.split(' ')[0]}`;
+
+            // Questions values
+            document.getElementById('quiz-question-badge').innerText = `SORU ${currentQuestionIdx + 1}`;
+            document.getElementById('quiz-question-text').innerHTML = q.question;
+
+            // Set up hint
+            const hintBox = document.getElementById('quiz-hint-box');
+            hintBox.classList.add('hidden');
+            hintBox.innerText = q.hint;
+
+            // Render Options
+            const optBox = document.getElementById('quiz-options-box');
+            optBox.innerHTML = '';
+
+            const isLocked = lockState[currentQuestionIdx];
+            const selectedIdx = answersState[currentQuestionIdx];
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = selectedIdx === idx;
+                let btnClass = "w-full text-left p-4 rounded-xl border border-slate-200 text-xs font-semibold flex items-center justify-between transition-all ";
+
+                if (isLocked) {
+                    if (opt.isCorrect) {
+                        btnClass += "bg-emerald-50 border-emerald-500 text-emerald-950 font-bold";
+                    } else if (isSelected) {
+                        btnClass += "bg-rose-50 border-rose-500 text-rose-950 font-bold";
+                    } else {
+                        btnClass += "bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed";
+                    }
+                } else {
+                    if (isSelected) {
+                        btnClass += "bg-slate-100 border-slate-700 text-slate-900 ring-2 ring-slate-800/10";
+                    } else {
+                        btnClass += "bg-white text-slate-700 hover:bg-slate-50";
+                    }
+                }
+
+                const btn = document.createElement('button');
+                btn.className = btnClass;
+                btn.disabled = isLocked;
+                btn.onclick = () => selectQuizOption(idx);
+
+                let labelHTML = `<span>${opt.text}</span>`;
+                if (isLocked) {
+                    if (opt.isCorrect) {
+                        labelHTML += `<span class="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-lg text-[10px] uppercase">✓ Doğru</span>`;
+                    } else if (isSelected) {
+                        labelHTML += `<span class="text-rose-700 bg-rose-100 px-2 py-0.5 rounded-lg text-[10px] uppercase">✗ Yanlış</span>`;
+                    }
+                }
+
+                btn.innerHTML = labelHTML;
+                optBox.appendChild(btn);
+            });
+
+            // Handle bottom buttons
+            const prevBtn = document.getElementById('quiz-prev-btn');
+            const nextBtn = document.getElementById('quiz-next-btn');
+
+            if (currentQuestionIdx > 0) {
+                prevBtn.classList.remove('hidden');
+            } else {
+                prevBtn.classList.add('hidden');
+            }
+
+            if (isLocked) {
+                nextBtn.disabled = false;
+                nextBtn.innerText = currentQuestionIdx === totalQuestions - 1 ? "Sınavı Bitir 📊" : "Sonraki Soru →";
+
+                // Show Explanation
+                const expBox = document.getElementById('quiz-explanation-box');
+                const expText = document.getElementById('quiz-explanation-text');
+                const expTitle = document.getElementById('quiz-explanation-title');
+
+                expBox.classList.remove('hidden');
+                if (q.options[selectedIdx].isCorrect) {
+                    expBox.className = "mt-6 p-4 rounded-2xl border bg-emerald-50/50 border-emerald-100 text-emerald-950";
+                    expTitle.innerText = "🌟 Doğru Cevap Tebrikler!";
+                } else {
+                    expBox.className = "mt-6 p-4 rounded-2xl border bg-rose-50/50 border-rose-100 text-rose-950";
+                    expTitle.innerText = "💡 Hatalı Yanıt, Açıklamayı İnceleyelim:";
+                }
+                expText.innerHTML = q.explanation;
+            } else {
+                nextBtn.disabled = selectedIdx === null;
+                nextBtn.innerText = "Cevabı Onayla 🎯";
+                document.getElementById('quiz-explanation-box').classList.add('hidden');
+            }
+
+            // Trigger formulas rendering (Safely check if MathJax is loaded and has typesetPromise)
+            if (typeof MathJax !== 'undefined' && typeof MathJax.typesetPromise === 'function') {
+                MathJax.typesetPromise().catch(function (err) {
+                    console.log("MathJax typesetting failed: " + err.message);
+                });
+            }
+        }
+
+        function selectQuizOption(idx) {
+            if (lockState[currentQuestionIdx]) return;
+            answersState[currentQuestionIdx] = idx;
+            renderQuiz();
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('quiz-hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuiz();
+            }
+        }
+
+        function nextQuestion() {
+            const isLocked = lockState[currentQuestionIdx];
+
+            if (!isLocked) {
+                // Confirm answer
+                lockState[currentQuestionIdx] = true;
+                renderQuiz();
+            } else {
+                // Move forward
+                currentQuestionIdx++;
+                renderQuiz();
+            }
+        }
+
+        function showQuizResults() {
+            stopTimer();
+            const data = getActiveQuestions();
+            let corrects = 0;
+
+            answersState.forEach((ansIdx, qIdx) => {
+                if (ansIdx !== null && data[qIdx].options[ansIdx].isCorrect) {
+                    corrects++;
+                }
+            });
+
+            const wrongs = data.length - corrects;
+            saveScore(currentSubject, corrects, data.length);
+            
+            if (corrects === data.length) {
+                launchConfetti();
+            }
+
+            document.getElementById('results-correct-count').innerText = `${corrects} / ${data.length}`;
+            document.getElementById('results-wrong-count').innerText = `${wrongs} / ${data.length}`;
+
+            // Custom encouraging feedback messages based on overall success rate
+            let feedback = "";
+            const successRatio = corrects / data.length;
+
+            if (successRatio === 1) {
+                feedback = `Olağanüstü! Bu dersteki ${data.length} sorunun tamamını doğru yanıtladın. Konuya tamamen hakimsin. Yazılıda 100 alman an meselesi! 💯✨`;
+            } else if (successRatio >= 0.6) {
+                feedback = `Çok güzel iş çıkardın! Dikkatinden kaçan ufak tefek pürüzler kalmış olabilir. 'Özet Bilgiler' sekmesine dönüp kısa bir tekrarla eksiksiz duruma gelebilirsin. 👍`;
+            } else {
+                feedback = `Önemli eksiklerini görmek için harika bir fırsat! Sınava kadar bolca vaktimiz var. Yan taraftaki detaylı konu özetlerini dikkatle okuduktan sonra bu denemeyi yeniden çözmeni öneririm. Başaracaksın! 🍀`;
+            }
+
+            document.getElementById('results-feedback-text').innerText = feedback;
+        }
+
+        function restartQuiz() {
+            currentQuestionIdx = 0;
+            // Re-initialize with null/false dynamically based on current subject questions length
+            const questionCount = subjectData[currentSubject].questions.length;
+            answersState = Array(questionCount).fill(null);
+            lockState = Array(questionCount).fill(false);
+            if (shuffleEnabled) {
+                currentShuffledQuestions = shuffleArray(subjectData[currentSubject].questions);
+            } else {
+                currentShuffledQuestions = null;
+            }
+            startTimer();
+            renderQuiz();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initDarkMode();
+            renderDashboardStats();
+        });
+    </script>
+</body>
+
+</html>
