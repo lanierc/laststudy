@@ -44,6 +44,15 @@
         body.dark .bg-cyan-50 { background: #164e63 !important; }
         body.dark .bg-purple-50 { background: #3b0764 !important; }
         body.dark .bg-emerald-50 { background: #064e3b !important; }
+        body.dark .bg-orange-50 { background: #7c2d12 !important; }
+        body.dark .bg-amber-50 { background: #78350f !important; }
+        body.dark .bg-teal-50 { background: #115e59 !important; }
+        body.dark .border-orange-100 { border-color: #7c2d12 !important; }
+        body.dark .border-amber-100 { border-color: #78350f !important; }
+        body.dark .border-teal-100 { border-color: #115e59 !important; }
+        body.dark .text-orange-700 { color: #fed7aa !important; }
+        body.dark .text-amber-700 { color: #fde68a !important; }
+        body.dark .text-teal-700 { color: #99f6e4 !important; }
         body.dark .shadow-md, body.dark .shadow-sm { box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; }
 
         /* Animations */
@@ -350,7 +359,7 @@
                     <!-- Actions -->
                     <div class="flex justify-between items-center mt-6 pt-6 border-t border-slate-100">
                         <button id="quiz-prev-btn" onclick="prevQuestion()"
-                            style="display:none" class="text-slate-500 hover:text-slate-800 font-bold text-xs items-center gap-1">←
+                            class="hidden text-slate-500 hover:text-slate-800 font-bold text-xs items-center gap-1">←
                             Geri</button>
                         <button id="quiz-next-btn" onclick="nextQuestion()"
                             class="ml-auto bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow hover:bg-slate-900 transition">Onayla
@@ -1559,7 +1568,7 @@
         // Search
         function filterStudyCards() {
             const query = document.getElementById('study-search').value.toLowerCase().trim();
-            const cards = document.querySelectorAll('#study-cards-container > div');
+            const cards = document.querySelectorAll('.study-card-item');
             cards.forEach(card => {
                 const text = card.textContent.toLowerCase();
                 card.style.display = text.includes(query) ? '' : 'none';
@@ -1688,8 +1697,13 @@
 
         // Inject Study Guide Content
         function renderStudyGuide() {
-            const container = document.getElementById('study-tab-content');
+            const container = document.getElementById('study-cards-container');
+            if (!container) return;
             container.innerHTML = '';
+
+            // Reset search input value
+            const searchInput = document.getElementById('study-search');
+            if (searchInput) searchInput.value = '';
 
             const data = subjectData[currentSubject];
             const theme = subjectThemes[currentSubject];
@@ -1711,7 +1725,7 @@
             // Injected notes
             data.studyCards.forEach(card => {
                 const cardEl = document.createElement('div');
-                cardEl.className = "bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-3";
+                cardEl.className = "study-card-item bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-3";
                 cardEl.innerHTML = `
                     <div class="flex items-center gap-2 font-bold text-slate-800 border-b border-slate-100 pb-2">
                         <span>${card.icon}</span>
